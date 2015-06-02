@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector> // std::vector
+#include <random>
 #include "Node.h"
 
 #define INPUTNUM 2
@@ -14,7 +15,11 @@
 
 double randomWeight()
 {
-	return 9.9;
+	std::random_device rd;
+	std::default_random_engine e1(rd());
+	std::uniform_real_distribution<double> uniform_dist(-1.0, 1.0);
+
+	return uniform_dist(e1);
 }
 
 int main(int argc, char* argv[])
@@ -98,7 +103,7 @@ int main(int argc, char* argv[])
 
 	for(int i = 0; i < OUTPUTNUM; i++)
 		outputLayer[i].display();
-	
+
 	// --------------------------------------------------------------
 
 	return 0;
