@@ -1,1 +1,1 @@
-Repository for my Work on a Neural Network.
+Repository for my work on a Neural Network.
