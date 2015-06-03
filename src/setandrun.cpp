@@ -10,8 +10,8 @@
 #include "Node.h"
 #include "data.h"
 
-#define INPUTNUM 2
-#define HIDDENNUM 3
+#define INPUTNUM 2 // Excluding Bias for hidden layer.
+#define HIDDENNUM 3 // Excluding Bias for output layer.
 #define OUTPUTNUM 1
 
 double randomWeight()
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 	int trainingCount = 0, row = 0, ideal_output;
 	while(trainingCount < 400)
 	{
-		// 'Running' the Net.
+		// 'Running' the Net --------------------------------------------
 		for(int i = 0; i < INPUTNUM; i++)
 		{
 			inputLayer[i].setNodeVal(NAND_data[row][i]);
@@ -105,20 +105,21 @@ int main(int argc, char* argv[])
 		row++;
 		if(row == 4) { row = 0; }
 
-		for(int i = 0; i < HIDDENNUM; i++)
+		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
 		{
 			hiddenLayer[i].calculateNodeVal();
 		}
 
-		for(int i = 0; i < OUTPUTNUM; i++)
+		for(int i = 0; i < OUTPUTNUM; i++) // Exclude the bias since it has a constant nodeVal.
 		{
 			outputLayer[i].calculateNodeVal();	
 		}
+		// --------------------------------------------------------------
 
 		// Comparing to see if the outputs match.
 		compare(outputLayer.back().getNodeVal(), ideal_output);
 
-		// Now, to calculate error and update weights.
+		// Now, to calculate error and update weights -------------------
 		for(int i = 0; i < OUTPUTNUM; i++) // Bias Node not used
 		{
 			outputLayer[i].calculateErrorGradients(ideal_output);
@@ -130,6 +131,8 @@ int main(int argc, char* argv[])
 			hiddenLayer[i].calculateErrorGradients(UNDEF);
 			hiddenLayer[i].updateWeights();
 		}
+
+		// --------------------------------------------------------------
 
 		//trainingCount++;
 	}
