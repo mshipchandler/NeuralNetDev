@@ -21,6 +21,7 @@ struct NodeCxn;
 class Node
 {
 	int type;
+	bool biasFlag;
 	int nodeID;
 	double nodeVal;
 	double errorGradient;
@@ -29,7 +30,7 @@ class Node
 
 	public:
 		Node();
-		Node(int, int, double);
+		Node(int, int, double, bool);
 
 		void setNodeVal(double _nodeVal) { nodeVal = _nodeVal; } // Should only be explicitly used for an Input Layer.
 		double getNodeVal() { return nodeVal; }
@@ -38,6 +39,7 @@ class Node
 		void setWeightPort(Node* address) { weight_port.push_back(address); }
 		void calculateNodeVal();
 		void setWeight_forUpdate(double, Node*);
+		bool isBias() { return biasFlag; }
 
 		void calculateErrorGradients(double);
 		double getErrorGradient() { return errorGradient; }

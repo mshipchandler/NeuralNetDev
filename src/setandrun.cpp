@@ -25,13 +25,15 @@ double randomWeight()
 
 void compare(double real_output, double ideal_output)
 {
-	if(real_output == ideal_output)
+	if((ideal_output == 1 && real_output > 0.9) || (ideal_output == 0 && real_output < 0.1))
 		std::cout << "TARGETS MATCH!" << std::endl;
 	else
 		std::cout << "TARGETS DO NOT MATCH YET!" << std::endl;
 
 	std::cout << "IDEAL OUTPUT: " << ideal_output 
 			  << " REAL OUTPUT: " << real_output << std::endl;
+
+	//std::cin.ignore(); // For debugging
 }
 
 int main(int argc, char* argv[])
@@ -40,6 +42,7 @@ int main(int argc, char* argv[])
 	std::vector<Node> hiddenLayer;
 	std::vector<Node> outputLayer;
 	int ID = 0;
+	double biasNodeForHiddenVal = 0.0, biasNodeForOutputVal = 0.0;
 
 	// Setup Layers -------------------------------------------------
 
@@ -49,13 +52,15 @@ int main(int argc, char* argv[])
 		weighted sums as per neural net heuristic. */
 
 	for(int i = 0; i < INPUTNUM; i++)
-		inputLayer.push_back(Node(INPUT, ID++, 4.2)); 
+		inputLayer.push_back(Node(INPUT, ID++, 0.0, false)); 
+	inputLayer.push_back(Node(INPUT, ID++, biasNodeForHiddenVal, true)); // Bias Node
 
 	for(int i = 0; i < HIDDENNUM; i++)
-		hiddenLayer.push_back(Node(HIDDEN, ID++, 0.0));
+		hiddenLayer.push_back(Node(HIDDEN, ID++, 0.0, false));
+	hiddenLayer.push_back(Node(INPUT, ID++, biasNodeForOutputVal, true)); // Bias Node
 
 	for(int i = 0; i < OUTPUTNUM; i++)
-		outputLayer.push_back(Node(OUTPUT, ID++, 0.0));
+		outputLayer.push_back(Node(OUTPUT, ID++, 0.0, false));
 	
 	// --------------------------------------------------------------
 
@@ -63,7 +68,7 @@ int main(int argc, char* argv[])
 
 	for(int i = 0; i < HIDDENNUM; i++)
 	{
-		for(int j = 0; j < INPUTNUM; j++)
+		for(int j = 0; j < INPUTNUM + 1; j++) // + 1 for Bias Node
 		{
 			inputLayer[j].setWeight(randomWeight(), &hiddenLayer[i]);
 			hiddenLayer[i].setWeightPort(&inputLayer[j]);
@@ -72,7 +77,7 @@ int main(int argc, char* argv[])
 
 	for(int i = 0; i < OUTPUTNUM; i++)
 	{
-		for(int j = 0; j < HIDDENNUM; j++)
+		for(int j = 0; j < HIDDENNUM + 1; j++) // + 1 for Bias Node
 		{
 			hiddenLayer[j].setWeight(randomWeight(), &outputLayer[i]);
 			outputLayer[i].setWeightPort(&hiddenLayer[j]);
@@ -114,13 +119,13 @@ int main(int argc, char* argv[])
 		compare(outputLayer.back().getNodeVal(), ideal_output);
 
 		// Now, to calculate error and update weights.
-		for(int i = 0; i < OUTPUTNUM; i++)
+		for(int i = 0; i < OUTPUTNUM; i++) // Bias Node not used
 		{
 			outputLayer[i].calculateErrorGradients(ideal_output);
 			outputLayer[i].updateWeights();
 		}
 
-		for(int i = 0; i < HIDDENNUM; i++)
+		for(int i = 0; i < HIDDENNUM; i++) // Bias Node not used
 		{
 			hiddenLayer[i].calculateErrorGradients(UNDEF);
 			hiddenLayer[i].updateWeights();

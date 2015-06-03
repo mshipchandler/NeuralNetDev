@@ -12,7 +12,15 @@
 
 namespace fn
 {
-	double activationFunction(double weightedSum)
+	double activationFunction_step(double weightedSum)
+	{
+		if(weightedSum >= 0)
+			return 1;
+		else
+			return 0;
+	}
+
+	double activationFunction_sigmoid(double weightedSum)
 	{
 		return (1 / (1 + exp(-1 * weightedSum))); 
 	}

@@ -12,11 +12,12 @@
 
 Node::Node() : type(UNDEF), nodeID(UNDEF), nodeVal(UNDEF) { }
 
-Node::Node(int _type, int _nodeID, double _nodeVal)
+Node::Node(int _type, int _nodeID, double _nodeVal, bool _biasFlag)
 {
 	type = _type;
 	nodeID = _nodeID;
 	nodeVal = _nodeVal;
+	biasFlag = _biasFlag;
 }
 
 void Node::setWeight(double _weight, Node* _destination)
@@ -44,7 +45,7 @@ void Node::calculateNodeVal()
 		weightedSum += weight_port[i]->getNodeVal() * weight_port[i]->getWeight(this);
 	}
 
-	setNodeVal(fn::activationFunction(weightedSum));
+	setNodeVal(fn::activationFunction_sigmoid(weightedSum));
 }
 
 void Node::setWeight_forUpdate(double updatedWeight, Node* address)
@@ -90,7 +91,11 @@ void Node::updateWeights()
 	double deltaWeight = 0.0, updatedWeight = 0.0;
 	for(int i = 0; i < weight_port.size(); i++)
 	{
-		deltaWeight = ALPHA * weight_port[i]->getNodeVal() * errorGradient;
+		if(weight_port[i]->isBias())
+			deltaWeight = ALPHA * errorGradient;
+		else	
+			deltaWeight = ALPHA * weight_port[i]->getNodeVal() * errorGradient;
+
 		updatedWeight = weight_port[i]->getWeight(this) + deltaWeight;
 		weight_port[i]->setWeight_forUpdate(updatedWeight, this);
 	}
