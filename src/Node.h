@@ -15,6 +15,7 @@
 #define OUTPUT 2
 #define UNDEF -1
 #define ERROR -1
+#define ALPHA 0.45 // Learning rate
 
 struct NodeCxn;
 class Node
@@ -22,8 +23,9 @@ class Node
 	int type;
 	int nodeID;
 	double nodeVal;
+	double errorGradient;
 	std::vector<NodeCxn> weights;
-	std::vector<Node*> weight_port; // Only for HIDDEN and OUTPUT layers.
+	std::vector<Node*> weight_port; // Used only for HIDDEN and OUTPUT layers.
 
 	public:
 		Node();
@@ -35,6 +37,11 @@ class Node
 		double getWeight(Node*);
 		void setWeightPort(Node* address) { weight_port.push_back(address); }
 		void calculateNodeVal();
+		void setWeight_forUpdate(double, Node*);
+
+		void calculateErrorGradients(double);
+		double getErrorGradient() { return errorGradient; }
+		void updateWeights();
 
 		// Debug Functions
 		void display();

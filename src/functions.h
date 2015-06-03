@@ -8,12 +8,13 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include <cmath> // exp()
+
 namespace fn
 {
 	double activationFunction(double weightedSum)
 	{
-		double val = weightedSum;
-		return val;
+		return (1 / (1 + exp(-1 * weightedSum))); 
 	}
 }
 

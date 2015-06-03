@@ -47,6 +47,55 @@ void Node::calculateNodeVal()
 	setNodeVal(fn::activationFunction(weightedSum));
 }
 
+void Node::setWeight_forUpdate(double updatedWeight, Node* address)
+{
+	for(int i = 0; i < weights.size(); i++)
+	{
+		if(weights[i].destination == address)
+			weights[i].weight = updatedWeight;
+	}
+}
+
+void Node::calculateErrorGradients(double ideal_output)
+{
+	switch(type)
+	{
+		case INPUT:
+			break;
+
+		case HIDDEN:
+		{
+				double weightedSum_errors = 0.0;
+				for(int i = 0; i < weights.size(); i++)
+				{
+					weightedSum_errors += weights[i].weight
+										 * weights[i].destination->getErrorGradient();
+				}
+
+				errorGradient = nodeVal * (1 - nodeVal) * (weightedSum_errors);
+			break;
+		} // Used to restrict the scope of weightedSum_errors to case HIDDEN.
+
+		case OUTPUT:
+				errorGradient = nodeVal * (1 - nodeVal) * (ideal_output - nodeVal);
+			break;
+
+		default:
+			break; // Should never reach here.
+	}
+}
+
+void Node::updateWeights()
+{
+	double deltaWeight = 0.0, updatedWeight = 0.0;
+	for(int i = 0; i < weight_port.size(); i++)
+	{
+		deltaWeight = ALPHA * weight_port[i]->getNodeVal() * errorGradient;
+		updatedWeight = weight_port[i]->getWeight(this) + deltaWeight;
+		weight_port[i]->setWeight_forUpdate(updatedWeight, this);
+	}
+}
+
 void Node::display()
 {
 	std::cout << "----------------" << this << "----------------" << std::endl;
