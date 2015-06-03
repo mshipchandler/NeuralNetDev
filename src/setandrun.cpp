@@ -94,9 +94,9 @@ int main(int argc, char* argv[])
 		// 'Running' the Net.
 		for(int i = 0; i < INPUTNUM; i++)
 		{
-			inputLayer[i].setNodeVal(XOR_data[row][i]);
+			inputLayer[i].setNodeVal(NAND_data[row][i]);
 		}
-		ideal_output = XOR_data[row][2];
+		ideal_output = NAND_data[row][2];
 		row++;
 		if(row == 4) { row = 0; }
 

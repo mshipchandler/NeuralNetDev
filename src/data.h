@@ -4,7 +4,7 @@
 	3-6-2015
 */
 
-double XOR_data[4][3] = 
+double NAND_data[4][3] = 
 {
 	0, 0, 1,
 	0, 1, 1,
