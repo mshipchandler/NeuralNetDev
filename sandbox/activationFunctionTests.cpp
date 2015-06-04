@@ -20,6 +20,11 @@ double activationFunction_step(double x)
 		return 0;
 }
 
+double activationFunction_tanh(double x)
+{
+	return tanh(x);
+}
+
 int main(int argc, char* argv[])
 {
 	double x;
@@ -30,6 +35,8 @@ int main(int argc, char* argv[])
 			<< activationFunction_sigmoid(x) << std::endl;
 	std::cout << "Running through step function: " 
 			<< activationFunction_step(x) << std::endl;
+	std::cout << "Running through hyperbolic (tanh) function: " 
+			<< activationFunction_tanh(x) << std::endl;
 
 	return 0;
 }

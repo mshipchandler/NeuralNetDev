@@ -8,7 +8,7 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <cmath> // exp()
+#include <cmath> // exp(), tanh()
 
 namespace fn
 {
@@ -23,6 +23,11 @@ namespace fn
 	double activationFunction_sigmoid(double weightedSum)
 	{
 		return (1 / (1 + exp(-1 * weightedSum))); 
+	}
+
+	double activationFunction_tanh(double weightedSum)
+	{
+		return tanh(weightedSum);
 	}
 }
 

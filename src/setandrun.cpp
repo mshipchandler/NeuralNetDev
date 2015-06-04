@@ -26,12 +26,12 @@ double randomWeight()
 void compare(double real_output, double ideal_output)
 {
 	if((ideal_output == 1 && real_output > 0.9) || (ideal_output == 0 && real_output < 0.1))
-		std::cout << "TARGETS MATCH!" << std::endl;
+		std::cout << "TARGETS MATCH." << " --> ";
 	else
-		std::cout << "TARGETS DO NOT MATCH YET!" << std::endl;
+		std::cout << "TARGETS DO NOT MATCH YET." << " --> ";
 
-	std::cout << "IDEAL OUTPUT: " << ideal_output 
-			  << " REAL OUTPUT: " << real_output << std::endl;
+	std::cout << "[IDEAL OUTPUT: " << ideal_output 
+			  << ", REAL OUTPUT: " << real_output << "]" << std::endl;
 
 	//std::cin.ignore(); // For debugging
 }
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 	std::vector<Node> hiddenLayer;
 	std::vector<Node> outputLayer;
 	int ID = 0;
-	double biasNodeForHiddenVal = 0.0, biasNodeForOutputVal = 0.0;
+	double biasNodeForHiddenVal = 1.0, biasNodeForOutputVal = 1.0;
 
 	// Setup Layers -------------------------------------------------
 
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 		heuristic. */
 
 	int trainingCount = 0, row = 0, ideal_output;
-	while(trainingCount < 400)
+	while(trainingCount < 5000)
 	{
 		// 'Running' the Net --------------------------------------------
 		for(int i = 0; i < INPUTNUM; i++)
@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 
 		// --------------------------------------------------------------
 
-		//trainingCount++;
+		trainingCount++;
 	}
 
 	// --------------------------------------------------------------
