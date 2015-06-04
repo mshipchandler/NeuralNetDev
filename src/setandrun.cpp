@@ -123,14 +123,20 @@ int main(int argc, char* argv[])
 		for(int i = 0; i < OUTPUTNUM; i++) // Bias Node not used
 		{
 			outputLayer[i].calculateErrorGradients(ideal_output);
-			outputLayer[i].updateWeights();
+			//outputLayer[i].updateWeights();
 		}
 
 		for(int i = 0; i < HIDDENNUM; i++) // Bias Node not used
 		{
 			hiddenLayer[i].calculateErrorGradients(UNDEF);
-			hiddenLayer[i].updateWeights();
+			//hiddenLayer[i].updateWeights();
 		}
+
+		for(int i = 0; i < OUTPUTNUM; i++) // Bias Node not used
+			outputLayer[i].updateWeights();
+
+		for(int i = 0; i < HIDDENNUM; i++) // Bias Node not used
+			hiddenLayer[i].updateWeights();
 
 		// --------------------------------------------------------------
 

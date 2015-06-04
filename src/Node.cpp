@@ -45,7 +45,7 @@ void Node::calculateNodeVal()
 		weightedSum += weight_port[i]->getNodeVal() * weight_port[i]->getWeight(this);
 	}
 
-	setNodeVal(fn::activationFunction_tanh(weightedSum));
+	setNodeVal(fn::activationFunction_sigmoid(weightedSum));
 }
 
 void Node::setWeight_forUpdate(double updatedWeight, Node* address)
@@ -74,13 +74,15 @@ void Node::calculateErrorGradients(double ideal_output)
 				}
 
 				// Gradient descent method
-				errorGradient = nodeVal * (1 - nodeVal) * (weightedSum_errors);
+				errorGradient = nodeVal * (1 - nodeVal) * (weightedSum_errors); // Derivative of sigmoid.
+				//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (weightedSum_errors); // Using the derivative of tanh.
 			break;
 		} // Used to restrict the scope of weightedSum_errors to case HIDDEN.
 
 		case OUTPUT:
 				// Gradient descent method
-				errorGradient = nodeVal * (1 - nodeVal) * (ideal_output - nodeVal);
+				errorGradient = nodeVal * (1 - nodeVal) * (ideal_output - nodeVal); // Derivative of sigmoid.
+				//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (ideal_output - nodeVal); // Using the derivative of tanh.
 			break;
 
 		default:
