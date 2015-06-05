@@ -45,7 +45,9 @@ void Node::calculateNodeVal()
 		weightedSum += weight_port[i]->getNodeVal() * weight_port[i]->getWeight(this);
 	}
 
+	//setNodeVal(fn::activationFunction_step(weightedSum));
 	setNodeVal(fn::activationFunction_sigmoid(weightedSum));
+	//setNodeVal(fn::activationFunction_tanh(weightedSum));
 }
 
 void Node::setWeight_forUpdate(double updatedWeight, Node* address)
