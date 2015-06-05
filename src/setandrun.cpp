@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector> // std::vector
 #include <random>
+#include <unistd.h>
 #include "Node.h"
 #include "data.h"
 
@@ -34,6 +35,7 @@ void compare(double real_output, double ideal_output)
 			  << ", REAL OUTPUT: " << real_output << "]" << std::endl;
 
 	//std::cin.ignore(); // For debugging
+	usleep(20000);
 }
 
 int main(int argc, char* argv[])
@@ -141,6 +143,7 @@ int main(int argc, char* argv[])
 		// --------------------------------------------------------------
 
 		trainingCount++;
+		std::cout << "Training Cycle: " << trainingCount << std::endl << std::endl;
 	}
 
 	// --------------------------------------------------------------
