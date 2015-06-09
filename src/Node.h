@@ -32,6 +32,7 @@ class Node
 		Node();
 		Node(int, int, double, bool);
 
+		// Setup and misc. functions
 		void setNodeVal(double _nodeVal) { nodeVal = _nodeVal; } // Should only be explicitly used for an Input Layer.
 		double getNodeVal() { return nodeVal; }
 		void setWeight(double, Node*);
@@ -41,6 +42,7 @@ class Node
 		void setWeight_forUpdate(double, Node*);
 		bool isBias() { return biasFlag; }
 
+		// Function for learning
 		void calculateErrorGradients(double);
 		double getErrorGradient() { return errorGradient; }
 		void updateWeights();

@@ -20,11 +20,13 @@ Node::Node(int _type, int _nodeID, double _nodeVal, bool _biasFlag)
 	biasFlag = _biasFlag;
 }
 
+// Set the weights of the connections.
 void Node::setWeight(double _weight, Node* _destination)
 {
 	weights.push_back(NodeCxn(_weight, _destination));	
 }
 
+// Returns the weight of a particular connection (of the corresponding address)
 double Node::getWeight(Node* address)
 {
 	for(int i = 0; i < weights.size(); i++)
@@ -36,6 +38,8 @@ double Node::getWeight(Node* address)
 	return ERROR; // Should never reach here if Net is set up properly.
 }
 
+// Finds the value of the Node after calculating the weighted sum and passing it
+// through the activation function. Used only for hidden and output layers.
 void Node::calculateNodeVal()
 {
 	double weightedSum = 0.0;
@@ -50,6 +54,8 @@ void Node::calculateNodeVal()
 	//setNodeVal(fn::activationFunction_tanh(weightedSum));
 }
 
+// Function to allow updating the weights during the learning. Updates the weights
+// of a particular connection (of the corresponding address)
 void Node::setWeight_forUpdate(double updatedWeight, Node* address)
 {
 	for(int i = 0; i < weights.size(); i++)
@@ -59,11 +65,12 @@ void Node::setWeight_forUpdate(double updatedWeight, Node* address)
 	}
 }
 
+// Function to calculate the errorGradient for the respective nodes.
 void Node::calculateErrorGradients(double ideal_output)
 {
 	switch(type)
 	{
-		case INPUT:
+		case INPUT: // No error calculation for Input nodes.
 			break;
 
 		case HIDDEN:
@@ -92,12 +99,13 @@ void Node::calculateErrorGradients(double ideal_output)
 	}
 }
 
+// Functionality for updating weights. To be used after errorGradients have been calculated.
 void Node::updateWeights()
 {
 	double deltaWeight = 0.0, updatedWeight = 0.0;
 	for(int i = 0; i < weight_port.size(); i++)
 	{
-		if(weight_port[i]->isBias())
+		if(weight_port[i]->isBias()) // If it is a bias node, node value doesn't come into play.
 			deltaWeight = ALPHA * errorGradient;
 		else	
 			deltaWeight = ALPHA * weight_port[i]->getNodeVal() * errorGradient;
@@ -107,6 +115,7 @@ void Node::updateWeights()
 	}
 }
 
+// Display node contents. Used for debugging.
 void Node::display()
 {
 	std::cout << "----------------" << this << "----------------" << std::endl;
