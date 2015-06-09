@@ -15,6 +15,7 @@
 #define HIDDENNUM 3 // Excluding Bias for output layer.
 #define OUTPUTNUM 1
 
+// Function will return a random weight between -1.0 and 1.0
 double randomWeight()
 {
 	std::random_device rd;

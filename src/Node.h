@@ -17,7 +17,7 @@
 #define ERROR -1
 #define ALPHA 0.45 // Learning rate
 
-struct NodeCxn;
+struct NodeCxn; // Forward declaration for std::vector<NodeCxn> weights
 class Node
 {
 	int type;
