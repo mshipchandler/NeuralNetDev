@@ -15,6 +15,22 @@
 #define HIDDENNUM 3 // Excluding Bias for output layer.
 #define OUTPUTNUM 1
 
+// Function to calculate RMS
+void calcRMS(std::vector<Node>& outputLayer, double ideal_output)
+{
+	double error = 0, RMS;
+	for(int i = 0; i < outputLayer.size(); i++)
+	{
+		double delta = ideal_output - outputLayer[i].getNodeVal();
+		error += delta * delta;
+	}
+	error /= outputLayer.size(); 
+	RMS = sqrt(error);
+
+	std::cout << "RMS: " << RMS << std::endl;
+}
+
+
 // Function will return a random weight between -1.0 and 1.0
 double randomWeight()
 {
@@ -121,6 +137,7 @@ int main(int argc, char* argv[])
 
 		// Comparing to see if the outputs match.
 		compare(outputLayer.back().getNodeVal(), ideal_output);
+		calcRMS(outputLayer, ideal_output);
 
 		// Now, to calculate error and update weights -------------------
 		for(int i = 0; i < OUTPUTNUM; i++) // Bias Node not used

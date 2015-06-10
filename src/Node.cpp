@@ -68,34 +68,31 @@ void Node::setWeight_forUpdate(double updatedWeight, Node* address)
 // Function to calculate the errorGradient for the respective nodes.
 void Node::calculateErrorGradients(double ideal_output)
 {
-	switch(type)
+	if(type == HIDDEN)
 	{
-		case INPUT: // No error calculation for Input nodes.
-			break;
-
-		case HIDDEN:
+		double weightedSum_errors = 0.0;
+		for(int i = 0; i < weights.size(); i++)
 		{
-				double weightedSum_errors = 0.0;
-				for(int i = 0; i < weights.size(); i++)
-				{
-					weightedSum_errors += weights[i].weight
+			weightedSum_errors += weights[i].weight
 										 * weights[i].destination->getErrorGradient();
-				}
+		}
 
-				// Gradient descent method
-				errorGradient = nodeVal * (1 - nodeVal) * (weightedSum_errors); // Derivative of sigmoid.
-				//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (weightedSum_errors); // Using the derivative of tanh.
-			break;
-		} // Used to restrict the scope of weightedSum_errors to case HIDDEN.
+		// Gradient descent method
+		errorGradient = nodeVal * (1 - nodeVal) * (weightedSum_errors); // Derivative of sigmoid.
+		//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (weightedSum_errors); // Using the derivative of tanh.
+	}
 
-		case OUTPUT:
-				// Gradient descent method
-				errorGradient = nodeVal * (1 - nodeVal) * (ideal_output - nodeVal); // Derivative of sigmoid.
-				//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (ideal_output - nodeVal); // Using the derivative of tanh.
-			break;
+	else if(type == OUTPUT)
+	{
+		// Gradient descent method
+		errorGradient = nodeVal * (1 - nodeVal) * (ideal_output - nodeVal); // Derivative of sigmoid.
+		//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (ideal_output - nodeVal); // Using the derivative of tanh.
+	}
 
-		default:
-			break; // Should never reach here.
+	else // if the type is INPUT or something other than HIDDEN AND OUTPUT.
+	{
+		std::cout << "SYSTEM MSG: Error: Cannot calculate errorGradient" 
+					<< std::endl; // Should never reach here.
 	}
 }
 
