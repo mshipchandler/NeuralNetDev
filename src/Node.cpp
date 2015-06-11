@@ -18,6 +18,7 @@ Node::Node(int _type, int _nodeID, double _nodeVal, bool _biasFlag)
 	nodeID = _nodeID;
 	nodeVal = _nodeVal;
 	biasFlag = _biasFlag;
+	errorGradient = 0.0;
 }
 
 // Set the weights of the connections.
@@ -52,6 +53,7 @@ void Node::calculateNodeVal()
 	//setNodeVal(fn::activationFunction_step(weightedSum));
 	setNodeVal(fn::activationFunction_sigmoid(weightedSum));
 	//setNodeVal(fn::activationFunction_tanh(weightedSum));
+	//setNodeVal(fn::activationFunction_linear(weightedSum));
 }
 
 // Function to allow updating the weights during the learning. Updates the weights

@@ -21,9 +21,9 @@ struct NodeCxn; // Forward declaration for std::vector<NodeCxn> weights
 class Node
 {
 	int type;
-	bool biasFlag;
 	int nodeID;
 	double nodeVal;
+	bool biasFlag;
 	double errorGradient;
 	std::vector<NodeCxn> weights;
 	std::vector<Node*> weight_port; // Used only for HIDDEN and OUTPUT layers.

@@ -52,7 +52,7 @@ void compare(double real_output, double ideal_output)
 			  << ", REAL OUTPUT: " << real_output << "]" << std::endl;
 
 	//std::cin.ignore(); // For debugging
-	usleep(20000);
+	//usleep(20000);
 }
 
 int main(int argc, char* argv[])
@@ -118,11 +118,11 @@ int main(int argc, char* argv[])
 		// 'Running' the Net --------------------------------------------
 		for(int i = 0; i < INPUTNUM; i++)
 		{
-			inputLayer[i].setNodeVal(NOR_data[row][i]);
+			inputLayer[i].setNodeVal(NAND_data[row][i]);
 		}
-		std::cout << "Inputs: A: " << NOR_data[row][0] << ", B: " 
-									<< NOR_data[row][1] << std::endl;
-		ideal_output = NOR_data[row][2];
+		std::cout << "Inputs: A: " << NAND_data[row][0] << ", B: " 
+									<< NAND_data[row][1] << std::endl;
+		ideal_output = NAND_data[row][2];
 		row++;
 		if(row == 4) { row = 0; }
 
