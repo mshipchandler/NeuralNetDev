@@ -15,7 +15,7 @@
 #define HIDDENNUM 3 // Excluding Bias for output layer.
 #define OUTPUTNUM 1
 
-// Function to calculate RMS
+// Function to calculate RMS (Takes into consideration cases with multiple outputs)
 void calcRMS(std::vector<Node>& outputLayer, double ideal_output)
 {
 	double error = 0, RMS;
@@ -118,9 +118,11 @@ int main(int argc, char* argv[])
 		// 'Running' the Net --------------------------------------------
 		for(int i = 0; i < INPUTNUM; i++)
 		{
-			inputLayer[i].setNodeVal(NAND_data[row][i]);
+			inputLayer[i].setNodeVal(NOR_data[row][i]);
 		}
-		ideal_output = NAND_data[row][2];
+		std::cout << "Inputs: A: " << NOR_data[row][0] << ", B: " 
+									<< NOR_data[row][1] << std::endl;
+		ideal_output = NOR_data[row][2];
 		row++;
 		if(row == 4) { row = 0; }
 
