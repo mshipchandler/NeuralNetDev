@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include "Node.h"
-#include "functions.h"
+//#include "functions.h"
 #include "activation_functions.h"
 
 // class Node functions ------------------------------------------------------------------------
@@ -85,8 +85,10 @@ void Node::calculateErrorGradients(double ideal_output)
 		}
 
 		// Gradient descent method
-		errorGradient = nodeVal * (1 - nodeVal) * (weightedSum_errors); // Derivative of sigmoid.
+		//errorGradient = nodeVal * (1 - nodeVal) * (weightedSum_errors); // Derivative of sigmoid.
 		//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (weightedSum_errors); // Using the derivative of tanh.
+
+		errorGradient = act_func->derivative(nodeVal) * (weightedSum_errors);
 	}
 
 	else if(type == OUTPUT)

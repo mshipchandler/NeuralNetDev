@@ -53,7 +53,7 @@ void compare(double real_output, double ideal_output)
 			  << ", REAL OUTPUT: " << real_output << "]" << std::endl;
 
 	//std::cin.ignore(); // For debugging
-	usleep(20000);
+	//usleep(20000);
 }
 
 int main(int argc, char* argv[])

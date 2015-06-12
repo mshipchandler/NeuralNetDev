@@ -20,6 +20,7 @@ class ActivationFunction
 class ActivationStep : public ActivationFunction
 {
 	public:
+		// Outputs either 0 or 1.
 		double activationFunction(double weightedSum)
 		{
 			if(weightedSum >= 0)
@@ -29,13 +30,14 @@ class ActivationStep : public ActivationFunction
 		}
 		double derivative(double nodeVal)
 		{
-
+			// Pending. -MS
 		}
 };
 
 class ActivationSigmoid : public ActivationFunction
 {
 	public:
+		// Outputs numbers in the range 0 to +1.
 		double activationFunction(double weightedSum)
 		{
 			return (1 / (1 + exp(-1 * weightedSum))); 
@@ -49,6 +51,7 @@ class ActivationSigmoid : public ActivationFunction
 class ActivationTanh : public ActivationFunction
 {
 	public:
+		// Outputs numbers in the range -1 to +1.
 		double activationFunction(double weightedSum)
 		{
 			return tanh(weightedSum);
@@ -62,6 +65,9 @@ class ActivationTanh : public ActivationFunction
 class ActivationLinear : public ActivationFunction
 {
 	public:
+		/*  Has no use theoretically and is essentially no activation
+			at all, but can be used to output the entire range of numbers.
+		*/
 		double activationFunction(double weightedSum)
 		{
 			return weightedSum;

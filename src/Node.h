@@ -24,7 +24,7 @@ class Node
 	int type;
 	int nodeID;
 	double nodeVal;
-	bool biasFlag;
+	bool biasFlag; // 'true' if bias node, 'false' otherwise.
 	double errorGradient;
 	ActivationFunction* act_func;
 	std::vector<NodeCxn> weights;
