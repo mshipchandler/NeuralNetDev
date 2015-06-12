@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include "Node.h"
 #include "data.h"
+#include "activation_functions.h"
 
 #define INPUTNUM 2 // Excluding Bias for hidden layer.
 #define HIDDENNUM 3 // Excluding Bias for output layer.
@@ -52,7 +53,7 @@ void compare(double real_output, double ideal_output)
 			  << ", REAL OUTPUT: " << real_output << "]" << std::endl;
 
 	//std::cin.ignore(); // For debugging
-	//usleep(20000);
+	usleep(20000);
 }
 
 int main(int argc, char* argv[])
@@ -70,16 +71,20 @@ int main(int argc, char* argv[])
 		hiddenLayer and outputLayer nodeVal will be calculated using
 		weighted sums as per neural net heuristic. */
 
+	/*  Any activation function can be used. Different activation function for
+		for different Nodes can be used as well. */
+	ActivationFunction* act_func = new ActivationSigmoid();
+
 	for(int i = 0; i < INPUTNUM; i++)
-		inputLayer.push_back(Node(INPUT, ID++, 0.0, false)); 
-	inputLayer.push_back(Node(INPUT, ID++, biasNodeForHiddenVal, true)); // Bias Node
+		inputLayer.push_back(Node(INPUT, ID++, 0.0, false, act_func)); 
+	inputLayer.push_back(Node(INPUT, ID++, biasNodeForHiddenVal, true, act_func)); // Bias Node
 
 	for(int i = 0; i < HIDDENNUM; i++)
-		hiddenLayer.push_back(Node(HIDDEN, ID++, 0.0, false));
-	hiddenLayer.push_back(Node(INPUT, ID++, biasNodeForOutputVal, true)); // Bias Node
+		hiddenLayer.push_back(Node(HIDDEN, ID++, 0.0, false, act_func));
+	hiddenLayer.push_back(Node(INPUT, ID++, biasNodeForOutputVal, true, act_func)); // Bias Node
 
 	for(int i = 0; i < OUTPUTNUM; i++)
-		outputLayer.push_back(Node(OUTPUT, ID++, 0.0, false));
+		outputLayer.push_back(Node(OUTPUT, ID++, 0.0, false, act_func));
 	
 	// --------------------------------------------------------------
 
@@ -181,5 +186,6 @@ int main(int argc, char* argv[])
 
 	// --------------------------------------------------------------
 
+	delete act_func;
 	return 0;
 }

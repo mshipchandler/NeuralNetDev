@@ -7,18 +7,21 @@
 #include <iostream>
 #include "Node.h"
 #include "functions.h"
+#include "activation_functions.h"
 
 // class Node functions ------------------------------------------------------------------------
 
 Node::Node() : type(UNDEF), nodeID(UNDEF), nodeVal(UNDEF) { }
 
-Node::Node(int _type, int _nodeID, double _nodeVal, bool _biasFlag)
+Node::Node(int _type, int _nodeID, double _nodeVal, bool _biasFlag, 
+									ActivationFunction* _act_func)
 {
 	type = _type;
 	nodeID = _nodeID;
 	nodeVal = _nodeVal;
 	biasFlag = _biasFlag;
 	errorGradient = 0.0;
+	act_func = _act_func;
 }
 
 // Set the weights of the connections.
@@ -51,9 +54,11 @@ void Node::calculateNodeVal()
 	}
 
 	//setNodeVal(fn::activationFunction_step(weightedSum));
-	setNodeVal(fn::activationFunction_sigmoid(weightedSum));
+	//setNodeVal(fn::activationFunction_sigmoid(weightedSum));
 	//setNodeVal(fn::activationFunction_tanh(weightedSum));
 	//setNodeVal(fn::activationFunction_linear(weightedSum));
+
+	setNodeVal(act_func->activationFunction(weightedSum));
 }
 
 // Function to allow updating the weights during the learning. Updates the weights
@@ -87,8 +92,10 @@ void Node::calculateErrorGradients(double ideal_output)
 	else if(type == OUTPUT)
 	{
 		// Gradient descent method
-		errorGradient = nodeVal * (1 - nodeVal) * (ideal_output - nodeVal); // Derivative of sigmoid.
+		//errorGradient = nodeVal * (1 - nodeVal) * (ideal_output - nodeVal); // Derivative of sigmoid.
 		//errorGradient = (1 - (tanh(nodeVal) * tanh(nodeVal))) * (ideal_output - nodeVal); // Using the derivative of tanh.
+
+		errorGradient = act_func->derivative(nodeVal) * (ideal_output - nodeVal);
 	}
 
 	else // if the type is INPUT or something other than HIDDEN AND OUTPUT.

@@ -17,6 +17,7 @@
 #define ERROR -1
 #define ALPHA 0.45 // Learning rate
 
+class ActivationFunction; // Forward declaration for ActivationFunction* act_func
 struct NodeCxn; // Forward declaration for std::vector<NodeCxn> weights
 class Node
 {
@@ -25,12 +26,13 @@ class Node
 	double nodeVal;
 	bool biasFlag;
 	double errorGradient;
+	ActivationFunction* act_func;
 	std::vector<NodeCxn> weights;
 	std::vector<Node*> weight_port; // Used only for HIDDEN and OUTPUT layers.
 
 	public:
 		Node();
-		Node(int, int, double, bool);
+		Node(int, int, double, bool, ActivationFunction*);
 
 		// Setup and misc. functions
 		void setNodeVal(double _nodeVal) { nodeVal = _nodeVal; } // Should only be explicitly used for an Input Layer.
