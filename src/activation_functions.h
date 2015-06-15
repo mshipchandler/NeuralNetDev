@@ -48,6 +48,19 @@ class ActivationSigmoid : public ActivationFunction
 		}
 };
 
+class ActivationSigmoidBipolar : public ActivationFunction
+{
+	public:
+		double activationFunction(double weightedSum)
+		{
+			return -1 + (2 / (1 + exp(-1 * weightedSum)));
+		}
+		double derivative(double nodeVal)
+		{
+			return 0.5 * (1 + nodeVal) * (1 - nodeVal);
+		}
+};
+
 class ActivationTanh : public ActivationFunction
 {
 	public:
