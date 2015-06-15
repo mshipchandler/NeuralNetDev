@@ -53,7 +53,7 @@ void compare(double real_output, double ideal_output)
 			  << ", REAL OUTPUT: " << real_output << "]" << std::endl;
 
 	//std::cin.ignore(); // For debugging
-	//usleep(20000);
+	usleep(20000);
 }
 
 int main(int argc, char* argv[])
@@ -73,7 +73,12 @@ int main(int argc, char* argv[])
 
 	/*  Any activation function can be used. Different activation function for
 		for different Nodes can be used as well. */
-	ActivationFunction* act_func = new ActivationSigmoid();
+		
+	//ActivationFunction* act_func = new ActivationStep();
+	//ActivationFunction* act_func = new ActivationSigmoid();
+	//ActivationFunction* act_func = new ActivationSigmoidBipolar();
+	ActivationFunction* act_func = new ActivationTanh();
+	//ActivationFunction* act_func = new ActivationLinear();
 
 	for(int i = 0; i < INPUTNUM; i++)
 		inputLayer.push_back(Node(INPUT, ID++, 0.0, false, act_func)); 
