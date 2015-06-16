@@ -44,7 +44,7 @@ class Node
 		void setWeight_forUpdate(double, Node*);
 		bool isBias() { return biasFlag; }
 
-		// Function for learning
+		// Function for the training cycle
 		void calculateErrorGradients(double);
 		double getErrorGradient() { return errorGradient; }
 		void updateWeights();
@@ -57,7 +57,6 @@ class Node
 struct NodeCxn
 {
 	double weight;
-	double deltaWeight;
 	Node* destination;
 
 	NodeCxn(double _weight, Node* _destination) : weight(_weight), destination(_destination) { }

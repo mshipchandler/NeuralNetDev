@@ -7,13 +7,13 @@
 #include <iostream>
 #include <vector> // std::vector
 #include <random>
-#include <unistd.h>
+#include <unistd.h> // usleep()
 #include "Node.h"
 #include "data.h"
 #include "activation_functions.h"
 
-#define INPUTNUM 2 // Excluding Bias for hidden layer.
-#define HIDDENNUM 3 // Excluding Bias for output layer.
+#define INPUTNUM 2 // Not including the Bias for the hidden layer.
+#define HIDDENNUM 3 // Not including the Bias for output the layer.
 #define OUTPUTNUM 1
 
 // Function to calculate RMS (Takes into consideration cases with multiple outputs)
@@ -73,12 +73,14 @@ int main(int argc, char* argv[])
 
 	/*  Any activation function can be used. Different activation function for
 		for different Nodes can be used as well. */
-		
+
+	// DO NOT FORGET TO DEALLOCATE ----------------------------------	
 	//ActivationFunction* act_func = new ActivationStep();
 	//ActivationFunction* act_func = new ActivationSigmoid();
 	//ActivationFunction* act_func = new ActivationSigmoidBipolar();
 	ActivationFunction* act_func = new ActivationTanh();
 	//ActivationFunction* act_func = new ActivationLinear();
+	// --------------------------------------------------------------
 
 	for(int i = 0; i < INPUTNUM; i++)
 		inputLayer.push_back(Node(INPUT, ID++, 0.0, false, act_func)); 
@@ -191,6 +193,6 @@ int main(int argc, char* argv[])
 
 	// --------------------------------------------------------------
 
-	delete act_func;
+	delete act_func; // Deallocate dynamically allocated memory
 	return 0;
 }
