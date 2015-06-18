@@ -62,7 +62,8 @@ int main(int argc, char* argv[])
 	std::vector<Node> hiddenLayer;
 	std::vector<Node> outputLayer;
 	int ID = 0;
-	double biasNodeForHiddenVal = 1.0, biasNodeForOutputVal = 1.0;
+	// Bias node activation is always 1, generally.
+	double biasNodeForHidden_Val = 1.0, biasNodeForOutput_Val = 1.0;
 
 	// Setup Layers -------------------------------------------------
 
@@ -84,11 +85,11 @@ int main(int argc, char* argv[])
 
 	for(int i = 0; i < INPUTNUM; i++)
 		inputLayer.push_back(Node(INPUT, ID++, 0.0, false, act_func)); 
-	inputLayer.push_back(Node(INPUT, ID++, biasNodeForHiddenVal, true, act_func)); // Bias Node
+	inputLayer.push_back(Node(INPUT, ID++, biasNodeForHidden_Val, true, act_func)); // Bias Node
 
 	for(int i = 0; i < HIDDENNUM; i++)
 		hiddenLayer.push_back(Node(HIDDEN, ID++, 0.0, false, act_func));
-	hiddenLayer.push_back(Node(INPUT, ID++, biasNodeForOutputVal, true, act_func)); // Bias Node
+	hiddenLayer.push_back(Node(INPUT, ID++, biasNodeForOutput_Val, true, act_func)); // Bias Node
 
 	for(int i = 0; i < OUTPUTNUM; i++)
 		outputLayer.push_back(Node(OUTPUT, ID++, 0.0, false, act_func));

@@ -15,7 +15,12 @@
 #define OUTPUT 2
 #define UNDEF -1
 #define ERROR -1
-#define ALPHA 0.45 // Learning rate
+#define ALPHA 0.1 // Learning rate
+/*
+	In practice, the learning rate is typically given a value of 0.1 or less.
+	Higher values may provide faster convergence on a solution, but may also 
+	increase instability and may lead to a failure to converge.
+*/
 
 class ActivationFunction; // Forward declaration for ActivationFunction* act_func
 struct NodeCxn; // Forward declaration for std::vector<NodeCxn> weights

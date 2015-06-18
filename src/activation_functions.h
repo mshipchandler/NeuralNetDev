@@ -17,6 +17,12 @@ class ActivationFunction
 		virtual double derivative(double) = 0;
 };
 
+/*
+	Step activation functions are used in MCP node networks, that do not
+	have the ability to learn. Weights have to be calculated by other means
+	to use such a network. That is why this function may not be usefull for
+	out MLP network. -MS
+*/
 class ActivationStep : public ActivationFunction
 {
 	public:

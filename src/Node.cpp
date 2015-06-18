@@ -113,9 +113,10 @@ void Node::updateWeights()
 	double deltaWeight = 0.0, updatedWeight = 0.0;
 	for(int i = 0; i < weight_port.size(); i++)
 	{
-		if(weight_port[i]->isBias()) // If it is a bias node, node value doesn't come into play.
-			deltaWeight = ALPHA * errorGradient;
-		else	
+		/*// If it is a bias node, node value doesn't come into play, becuase the node value is always 1, generally.
+		if(weight_port[i]->isBias()) 
+			deltaWeight = ALPHA * errorGradient; // This can be omitted. -MS
+		else*/
 			deltaWeight = ALPHA * weight_port[i]->getNodeVal() * errorGradient;
 
 		updatedWeight = weight_port[i]->getWeight(this) + deltaWeight;
