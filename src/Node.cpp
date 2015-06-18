@@ -14,7 +14,7 @@
 Node::Node() : type(UNDEF), nodeID(UNDEF), nodeVal(UNDEF) { }
 
 Node::Node(int _type, int _nodeID, double _nodeVal, bool _biasFlag, 
-									ActivationFunction* _act_func)
+									iActivationFunction* _act_func)
 {
 	type = _type;
 	nodeID = _nodeID;
@@ -33,7 +33,7 @@ void Node::setWeight(double _weight, Node* _destination)
 // Returns the weight of a particular connection (of the corresponding address)
 double Node::getWeight(Node* address)
 {
-	for(int i = 0; i < weights.size(); i++)
+	for(int i = 0; i < (int)weights.size(); i++)
 	{
 		if(weights[i].destination == address)
 			return weights[i].weight;
@@ -48,7 +48,7 @@ void Node::calculateNodeVal()
 {
 	double weightedSum = 0.0;
 
-	for(int i = 0; i < weight_port.size(); i++)
+	for(int i = 0; i < (int)weight_port.size(); i++)
 	{
 		weightedSum += weight_port[i]->getNodeVal() * weight_port[i]->getWeight(this);
 	}
@@ -65,7 +65,7 @@ void Node::calculateNodeVal()
 // of a particular connection (of the corresponding address)
 void Node::setWeight_forUpdate(double updatedWeight, Node* address)
 {
-	for(int i = 0; i < weights.size(); i++)
+	for(int i = 0; i < (int)weights.size(); i++)
 	{
 		if(weights[i].destination == address)
 			weights[i].weight = updatedWeight;
@@ -78,7 +78,7 @@ void Node::calculateErrorGradients(double ideal_output)
 	if(type == HIDDEN)
 	{
 		double weightedSum_errors = 0.0;
-		for(int i = 0; i < weights.size(); i++)
+		for(int i = 0; i < (int)weights.size(); i++)
 		{
 			weightedSum_errors += weights[i].weight
 										 * weights[i].destination->getErrorGradient();
@@ -111,7 +111,7 @@ void Node::calculateErrorGradients(double ideal_output)
 void Node::updateWeights()
 {
 	double deltaWeight = 0.0, updatedWeight = 0.0;
-	for(int i = 0; i < weight_port.size(); i++)
+	for(int i = 0; i < (int)weight_port.size(); i++)
 	{
 		/*// If it is a bias node, node value doesn't come into play, becuase the node value is always 1, generally.
 		if(weight_port[i]->isBias()) 
@@ -132,10 +132,10 @@ void Node::display()
 	std::cout << " nodeID: " << nodeID << std::endl;
 	std::cout << " nodeVal: " << nodeVal << std::endl;
 	std::cout << " weight_port: " << std::endl;
-		for (int i = 0; i < weight_port.size(); ++i)
+		for (int i = 0; i < (int)weight_port.size(); ++i)
 			std::cout << "  " << weight_port[i] << std::endl;
 	std::cout << " weights: " << std::endl;
-		for(int i = 0; i < weights.size(); i++)
+		for(int i = 0; i < (int)weights.size(); i++)
 		{
 			std::cout << "  " << weights[i].weight << 
 						"-->" << weights[i].destination << std::endl;

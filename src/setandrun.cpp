@@ -20,7 +20,7 @@
 void calcRMS(std::vector<Node>& outputLayer, double ideal_output)
 {
 	double error = 0, RMS;
-	for(int i = 0; i < outputLayer.size(); i++)
+	for(int i = 0; i < (int)outputLayer.size(); i++)
 	{
 		double delta = ideal_output - outputLayer[i].getNodeVal();
 		error += delta * delta;
@@ -75,12 +75,12 @@ int main(int argc, char* argv[])
 	/*  Any activation function can be used. Different activation function for
 		for different Nodes can be used as well. */
 
-	// DO NOT FORGET TO DEALLOCATE ----------------------------------	
-	//ActivationFunction* act_func = new ActivationStep();
-	//ActivationFunction* act_func = new ActivationSigmoid();
-	//ActivationFunction* act_func = new ActivationSigmoidBipolar();
-	ActivationFunction* act_func = new ActivationTanh();
-	//ActivationFunction* act_func = new ActivationLinear();
+	// DO NOT FORGET TO DEALLOCATE ----------------------------------
+	//iActivationFunction* act_func = new ActivationStep();
+	//iActivationFunction* act_func = new ActivationSigmoid();
+	//iActivationFunction* act_func = new ActivationSigmoidBipolar();
+	iActivationFunction* act_func = new ActivationTanh();
+	//iActivationFunction* act_func = new ActivationLinear();
 	// --------------------------------------------------------------
 
 	for(int i = 0; i < INPUTNUM; i++)

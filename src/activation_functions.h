@@ -10,7 +10,7 @@
 
 #include <cmath> // exp(), tanh()
 
-class ActivationFunction
+class iActivationFunction
 {
 	public:
 		virtual double activationFunction(double) = 0;
@@ -23,7 +23,7 @@ class ActivationFunction
 	to use such a network. That is why this function may not be usefull for
 	out MLP network. -MS
 */
-class ActivationStep : public ActivationFunction
+class ActivationStep : public iActivationFunction
 {
 	public:
 		// Outputs either 0 or 1.
@@ -40,7 +40,7 @@ class ActivationStep : public ActivationFunction
 		}
 };
 
-class ActivationSigmoid : public ActivationFunction
+class ActivationSigmoid : public iActivationFunction
 {
 	public:
 		// Outputs numbers in the range 0 to +1.
@@ -54,7 +54,7 @@ class ActivationSigmoid : public ActivationFunction
 		}
 };
 
-class ActivationSigmoidBipolar : public ActivationFunction
+class ActivationSigmoidBipolar : public iActivationFunction
 {
 	public:
 		double activationFunction(double weightedSum)
@@ -67,7 +67,7 @@ class ActivationSigmoidBipolar : public ActivationFunction
 		}
 };
 
-class ActivationTanh : public ActivationFunction
+class ActivationTanh : public iActivationFunction
 {
 	public:
 		// Outputs numbers in the range -1 to +1.
@@ -81,7 +81,7 @@ class ActivationTanh : public ActivationFunction
 		}
 };
 
-class ActivationLinear : public ActivationFunction
+class ActivationLinear : public iActivationFunction
 {
 	public:
 		/*  Has no use theoretically and is essentially no activation

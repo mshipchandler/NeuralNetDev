@@ -22,7 +22,7 @@
 	increase instability and may lead to a failure to converge.
 */
 
-class ActivationFunction; // Forward declaration for ActivationFunction* act_func
+class iActivationFunction; // Forward declaration for iActivationFunction* act_func
 struct NodeCxn; // Forward declaration for std::vector<NodeCxn> weights
 class Node
 {
@@ -31,13 +31,13 @@ class Node
 	double nodeVal;
 	bool biasFlag; // 'true' if bias node, 'false' otherwise.
 	double errorGradient;
-	ActivationFunction* act_func;
+	iActivationFunction* act_func;
 	std::vector<NodeCxn> weights;
 	std::vector<Node*> weight_port; // Used only for HIDDEN and OUTPUT layers.
 
 	public:
 		Node();
-		Node(int, int, double, bool, ActivationFunction*);
+		Node(int, int, double, bool, iActivationFunction*);
 
 		// Setup and misc. functions
 		void setNodeVal(double _nodeVal) { nodeVal = _nodeVal; } // Should only be explicitly used for an Input Layer.
