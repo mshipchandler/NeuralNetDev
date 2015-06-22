@@ -15,6 +15,7 @@ class iActivationFunction
 	public:
 		virtual double activationFunction(double) = 0;
 		virtual double derivative(double) = 0;
+		virtual ~iActivationFunction() { }
 };
 
 /*
@@ -37,6 +38,7 @@ class ActivationStep : public iActivationFunction
 		double derivative(double nodeVal)
 		{
 			// Pending. -MS
+			return -1; // Error state.
 		}
 };
 
@@ -93,7 +95,8 @@ class ActivationLinear : public iActivationFunction
 		}
 		double derivative(double nodeVal)
 		{
-			std::cout << "SYSTEM MSG: No derivative for linear activation function." << std::endl;
+			std::cout << "SYSTEM MSG: Unusable derivative for linear activation function." << std::endl;
+			return -1; // Error state.
 		}
 };
 
