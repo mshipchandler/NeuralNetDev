@@ -26,4 +26,4 @@ setandrun.o: ./src/setandrun.cpp ./src/Node.h ./src/data.h ./src/activation_func
 	@$(CC) $(CFLAGS) -c ./src/setandrun.cpp -o ./obj/setandrun.o
 
 clean:
-	@-rm -rf $(OBJDIR) $(BINDIR)	
+	@-rm -rf $(OBJDIR) $(BINDIR)
