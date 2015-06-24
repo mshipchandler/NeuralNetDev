@@ -131,11 +131,11 @@ int main(int argc, char* argv[])
 		// 'Running' the Net --------------------------------------------
 		for(int i = 0; i < INPUTNUM; i++)
 		{
-			inputLayer[i].setNodeVal(NAND_data[row][i]);
+			inputLayer[i].setNodeVal(XOR_data[row][i]);
 		}
-		std::cout << "Inputs: A: " << NAND_data[row][0] << ", B: " 
-									<< NAND_data[row][1] << std::endl;
-		ideal_output = NAND_data[row][2];
+		std::cout << "Inputs: A: " << XOR_data[row][0] << ", B: " 
+									<< XOR_data[row][1] << std::endl;
+		ideal_output = XOR_data[row][2];
 		row++;
 		if(row == 4) { row = 0; }
 

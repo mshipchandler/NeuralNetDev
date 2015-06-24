@@ -15,7 +15,7 @@ class iActivationFunction
 	public:
 		virtual double activationFunction(double) = 0;
 		virtual double derivative(double) = 0;
-		virtual ~iActivationFunction() { }
+		virtual ~iActivationFunction() = default;
 };
 
 /*
