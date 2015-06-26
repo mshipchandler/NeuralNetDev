@@ -125,19 +125,23 @@ int main(int argc, char* argv[])
 		calculated using weighted sums as per neural net 
 		heuristic. */
 
-	int trainingCount = 0, row = 0, ideal_output;
+	int trainingCount = 0, training_set_num = 0, ideal_output;
+	const std::vector<std::vector<double>> training_inputs = XOR_inputs, 
+			training_outputs = XOR_outputs; 
+	int training_inputs_size = training_inputs.size();
+
 	while(trainingCount < 5000)
 	{
 		// 'Running' the Net --------------------------------------------
 		for(int i = 0; i < INPUTNUM; i++)
 		{
-			inputLayer[i].setNodeVal(XOR_data[row][i]);
+			inputLayer[i].setNodeVal(training_inputs[training_set_num][i]);
 		}
-		std::cout << "Inputs: A: " << XOR_data[row][0] << ", B: " 
-									<< XOR_data[row][1] << std::endl;
-		ideal_output = XOR_data[row][2];
-		row++;
-		if(row == 4) { row = 0; }
+		std::cout << "Inputs: A: " << training_inputs[training_set_num][0] << ", B: " 
+									<< training_inputs[training_set_num][1] << std::endl;
+		ideal_output = training_outputs[training_set_num][0];
+		training_set_num++;
+		if(training_set_num == training_inputs_size) { training_set_num = 0; }
 
 		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
 		{
