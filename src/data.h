@@ -36,10 +36,10 @@ const std::vector<std::vector<double>> NAND_outputs =
 
 const std::vector<std::vector<double>> NOR_inputs = 
 {
-	{0, 0, 1},
-	{0, 1, 0},
-	{1, 0, 0},
-	{1, 1, 0}
+	{0, 0},
+	{0, 1},
+	{1, 0},
+	{1, 1}
 };
 
 const std::vector<std::vector<double>> NOR_outputs = 
@@ -52,10 +52,10 @@ const std::vector<std::vector<double>> NOR_outputs =
 
 const std::vector<std::vector<double>> XOR_inputs = 
 {
-	{0, 0, 0},
-	{0, 1, 1},
-	{1, 0, 1},
-	{1, 1, 0}
+	{0, 0},
+	{0, 1},
+	{1, 0},
+	{1, 1}
 };
 
 const std::vector<std::vector<double>> XOR_outputs = 
