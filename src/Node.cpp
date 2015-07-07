@@ -124,6 +124,18 @@ void Node::updateWeights()
 	}
 }
 
+// Unsupervised weight update using Hebb's rule.
+ void Node::updateWeights_unsupervised()
+ {
+ 	double deltaWeight = 0.0, updatedWeight = 0.0;
+ 	for(int i = 0; i < (int)weight_port.size(); i++)
+ 	{
+ 		deltaWeight = ALPHA * weight_port[i]->getNodeVal() * nodeVal;
+ 		updatedWeight = weight_port[i]->getWeight(this) + deltaWeight;
+ 		weight_port[i]->setWeight_forUpdate(updatedWeight, this);
+ 	}
+ }
+
 // Display node contents. Used for debugging.
 void Node::display()
 {

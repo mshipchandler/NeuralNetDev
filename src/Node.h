@@ -49,10 +49,13 @@ class Node
 		void setWeight_forUpdate(double, Node*);
 		bool isBias() { return biasFlag; }
 
-		// Function for the training cycle
+		// Function for the training cycle (SUPERVISED)
 		void calculateErrorGradients(double);
 		double getErrorGradient() { return errorGradient; }
 		void updateWeights();
+
+		// Functions for the training cycle (UNSUPERVISED)
+		void updateWeights_unsupervised();
 
 		// Debug Functions
 		void display();
