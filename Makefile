@@ -8,10 +8,10 @@ CFLAGS = -std=c++11 -Wall
 OBJDIR = ./obj
 BINDIR = ./bin
 
-default: clean directories binary
+default: directories binary
 	@echo "Binary created inside the ./bin directory."
 
-unsupervised: clean directories binary_unsupervised
+unsupervised: directories binary_unsupervised
 	@echo "Binary created inside the ./bin directory."
 
 directories:
