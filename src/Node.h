@@ -42,6 +42,7 @@ class Node
 		// Setup and misc. functions
 		void setNodeVal(double _nodeVal) { nodeVal = _nodeVal; } // Should only be explicitly used for an Input Layer.
 		double getNodeVal() { return nodeVal; }
+		double getNodeID() { return nodeID; }
 		void setWeight(double, Node*);
 		double getWeight(Node*);
 		void setWeightPort(Node* address) { weight_port.push_back(address); }

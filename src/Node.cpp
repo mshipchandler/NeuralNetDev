@@ -59,6 +59,8 @@ void Node::calculateNodeVal()
 	//setNodeVal(fn::activationFunction_linear(weightedSum));
 
 	setNodeVal(act_func->activationFunction(weightedSum));
+	std::cout << "Node Val of Node " << nodeID << ": " 
+					<< act_func->activationFunction(weightedSum) << std::endl;
 }
 
 // Function to allow updating the weights during the learning. Updates the weights
@@ -130,9 +132,15 @@ void Node::updateWeights()
  	double deltaWeight = 0.0, updatedWeight = 0.0;
  	for(int i = 0; i < (int)weight_port.size(); i++)
  	{
- 		deltaWeight = ALPHA * weight_port[i]->getNodeVal() * nodeVal;
- 		updatedWeight = weight_port[i]->getWeight(this) + deltaWeight;
- 		weight_port[i]->setWeight_forUpdate(updatedWeight, this);
+ 		if(weight_port[i]->getNodeVal() > 0 && nodeVal > 0)
+ 		{
+ 			//std::cout << "Training weights between nodes " << 
+ 			//			weight_port[i]->getNodeID() << " and " << 
+ 			//			nodeID << std::endl;
+ 			deltaWeight = ALPHA * weight_port[i]->getNodeVal() * nodeVal;
+ 			updatedWeight = weight_port[i]->getWeight(this) + deltaWeight;
+ 			weight_port[i]->setWeight_forUpdate(updatedWeight, this);
+ 		}
  	}
  }
 

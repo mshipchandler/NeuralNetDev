@@ -97,24 +97,24 @@ int main(int argc, char* argv[])
 
 	while(trainingCount < 5000)
 	{
-		for(int i = 0; i < INPUTNUM; i++)
+		for(int i = 0; i < INPUTNUM; i++) // Exclude the bias iteration because of the constant nodeVal.
 			{
 				inputLayer[i].setNodeVal(training_inputs[training_set_num][i]);
 			}
-			//std::cout << "Inputs: A: " << training_inputs[training_set_num][0] << ", B: " 
-			//							<< training_inputs[training_set_num][1] << std::endl;
+			std::cout << "Inputs: A: " << training_inputs[training_set_num][0] << ", B: " 
+										<< training_inputs[training_set_num][1] << std::endl;
 			ideal_output = training_outputs[training_set_num][0];
 			training_set_num++;
 
 		if(training_set_num == training_inputs_size) { training_set_num = 0; }
 
-		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
+		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias iteration because of the constant nodeVal.
 		{
 			hiddenLayer[i].calculateNodeVal();
 			hiddenLayer[i].updateWeights_unsupervised();
 		}
 
-		for(int i = 0; i < OUTPUTNUM; i++) // Exclude the bias since it has a constant nodeVal.
+		for(int i = 0; i < OUTPUTNUM; i++)
 		{
 			outputLayer[i].calculateNodeVal();
 			outputLayer[i].updateWeights_unsupervised();
