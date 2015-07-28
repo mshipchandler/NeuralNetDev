@@ -14,7 +14,7 @@
 #include "activation_functions.h"
 
 #define INPUTNUM 64 // Not including the Bias for the hidden layer.
-#define HIDDENNUM 32 // Not including the Bias for output the layer.
+#define HIDDENNUM 128 // Not including the Bias for output the layer.
 #define OUTPUTNUM 1
 
 // Function to calculate RMS (Takes into consideration cases with multiple outputs)
@@ -45,7 +45,7 @@ double randomWeight()
 
 void compare(double real_output, double ideal_output)
 {
-	if((ideal_output == 1 && real_output > 0.9))//|| (ideal_output == 0 && real_output < 0.1))
+	if((ideal_output == 1 && real_output > 0.9)|| (ideal_output == 0 && real_output < 0.1))
 		std::cout << "TARGETS MATCH." << " --> ";
 	else
 		std::cout << "TARGETS DO NOT MATCH YET." << " --> ";
@@ -63,6 +63,10 @@ void chessboard_check(double output)
 	{
 		std::cout << "Part of the Chessboard!" << std::endl;
 	}
+	else
+	{
+		std::cout << "Not a part of the Chessboard!" << std::endl;	
+	}
 
 	usleep(20000);
 }
@@ -71,7 +75,7 @@ int main(int argc, char* argv[])
 {
 	std::cout << "OpenCV Version: " << CV_VERSION << std::endl;
 
-	if(argc != 3)
+	if(argc != 4)
 	{
 		std::cerr << "Error: Please enter TWO images." << std::endl;
 		std::cerr << " Usage: " << argv[0] << 
@@ -79,8 +83,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	Mat train_image = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-	if(train_image.empty())
+	Mat train_image1 = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+	Mat train_image2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+	if(train_image1.empty() || train_image2.empty())
 	{
 		std::cerr << "Error: Could not load test image: " << 
 			argv[1] << std::endl;
@@ -151,7 +156,11 @@ int main(int argc, char* argv[])
 	// Image Processing Work-----------------------------------------
 
 	std::vector<std::vector<double>> feature_vector_train = 
-										getDescriptors(train_image);
+										getDescriptors(train_image1);
+	int image1_feature_vector_limit = (int)feature_vector_train.size();
+	std::vector<std::vector<double>> temp = getDescriptors(train_image2);
+
+	feature_vector_train.insert(feature_vector_train.end(), temp.begin(), temp.end());
 
 	// --------------------------------------------------------------
 
@@ -177,6 +186,8 @@ int main(int argc, char* argv[])
 
 		// 1 - Chessboard, 0 - No Chessboard.
 		ideal_output = 1; // THIS WILL CHANGE. 1 for now, since I am only feeding chessboards to the net.
+		if(trainingCount > image1_feature_vector_limit)
+			ideal_output = 0;
 		
 		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
 		{
@@ -220,7 +231,7 @@ int main(int argc, char* argv[])
 
 	// TESTING THE IMAGE --------------------------------------------
 
-	Mat test_image = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+	Mat test_image = imread(argv[3], CV_LOAD_IMAGE_COLOR);
 
 	std::vector<std::vector<double>> feature_vector_test = 
 										getDescriptors(test_image);	
