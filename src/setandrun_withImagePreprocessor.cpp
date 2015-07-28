@@ -13,8 +13,8 @@
 #include "image_preprocessor.h"
 #include "activation_functions.h"
 
-#define INPUTNUM 4 // Not including the Bias for the hidden layer.
-#define HIDDENNUM 10 // Not including the Bias for output the layer.
+#define INPUTNUM 3 // Not including the Bias for the hidden layer.
+#define HIDDENNUM 8 // Not including the Bias for output the layer.
 #define OUTPUTNUM 1
 
 // Function to calculate RMS (Takes into consideration cases with multiple outputs)
@@ -167,16 +167,19 @@ int main(int argc, char* argv[])
 
 	int trainingCount = 0, ideal_output;
 
-	while(trainingCount < 2000)//totalTrainingCount)
+	while(trainingCount < totalTrainingCount)
 	{
-		if((float)image_features[trainingCount].blobFlag != 1 ||
-			(float)image_features[trainingCount].lineFlag != 1|| 
-			(float)image_features[trainingCount].cornerFlag != 1)
+		if((float)image_features[trainingCount].blobFlag == 0 &&
+			(float)image_features[trainingCount].lineFlag == 0 && 
+			(float)image_features[trainingCount].cornerFlag == 0)
+		{
+			trainingCount++;
 			continue;
+		}
 
 		const std::vector<float> training_inputs = 
 		{
-			image_features[trainingCount].intensity,
+			//image_features[trainingCount].intensity,
 			(float)image_features[trainingCount].blobFlag,
 			(float)image_features[trainingCount].lineFlag,
 			(float)image_features[trainingCount].cornerFlag
@@ -248,7 +251,7 @@ int main(int argc, char* argv[])
 	{
 		const std::vector<float> testing_inputs = 
 		{
-			image_features_test_image[trainingCount_test_image].intensity,
+			//image_features_test_image[trainingCount_test_image].intensity,
 			(float)image_features_test_image[trainingCount_test_image].blobFlag,
 			(float)image_features_test_image[trainingCount_test_image].lineFlag,
 			(float)image_features_test_image[trainingCount_test_image].cornerFlag
