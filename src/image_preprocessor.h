@@ -264,7 +264,7 @@ void updateImageFeatures(std::vector<PixelChar>& image_features,
 */
 void writeToFile(const std::vector<PixelChar>& image_features)
 {
-	std::ofstream fout("./training_data/chessBoardtrainingData.csv");
+	std::ofstream fout("../resources/training_data/chessBoardtrainingData.csv");
 	fout << "x, y, intensity, blob, line, corner" << std::endl;
 
 	std::cout << "Writing to file." << std::endl;
