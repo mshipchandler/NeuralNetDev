@@ -61,11 +61,11 @@ void chessboard_check(double output)
 {
 	if(output > 0.9)
 	{
-		std::cout << "Part of the Chessboard!" << std::endl;
+		std::cout << "Part of the Chessboard." << std::endl;
 	}
 	else
 	{
-		std::cout << "Not a part of the Chessboard!" << std::endl;	
+		std::cout << "Not a part of the Chessboard." << std::endl;	
 	}
 
 	usleep(20000);
@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
 		}
 
 		// 1 - Chessboard, 0 - No Chessboard.
-		ideal_output = 1; // THIS WILL CHANGE. 1 for now, since I am only feeding chessboards to the net.
+		ideal_output = 1;
 		if(trainingCount > image1_feature_vector_limit)
 			ideal_output = 0;
 		
@@ -242,7 +242,7 @@ int main(int argc, char* argv[])
 	while(trainingCount_test_image < totalTrainingCount_test_image)
 	{
 
-		// 'Running' the Net --------------------------------------------
+		// 'Running' the Net
 		for(int i = 0; i < INPUTNUM; i++)
 		{
 			inputLayer[i].setNodeVal(feature_vector_test[trainingCount_test_image][i]);

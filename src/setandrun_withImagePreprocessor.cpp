@@ -13,7 +13,7 @@
 #include "image_preprocessor.h"
 #include "activation_functions.h"
 
-#define INPUTNUM 3 // Not including the Bias for the hidden layer.
+#define INPUTNUM 4 // Not including the Bias for the hidden layer.
 #define HIDDENNUM 8 // Not including the Bias for output the layer.
 #define OUTPUTNUM 1
 
@@ -45,7 +45,7 @@ double randomWeight()
 
 void compare(double real_output, double ideal_output)
 {
-	if((ideal_output == 1 && real_output > 0.9))//|| (ideal_output == 0 && real_output < 0.1))
+	if((ideal_output == 1 && real_output > 0.9)|| (ideal_output == 0 && real_output < 0.1))
 		std::cout << "TARGETS MATCH." << " --> ";
 	else
 		std::cout << "TARGETS DO NOT MATCH YET." << " --> ";
@@ -57,29 +57,41 @@ void compare(double real_output, double ideal_output)
 	//usleep(20000);
 }
 
+int get_ideal_output(Mat train_image_target, Point2f coordinates)
+{
+	Vec3b channels = train_image_target.at<uchar> (coordinates.y, coordinates.x);
+	if((float)channels[0] == 0)
+		return 1;
+	else 
+		return 0;
+}
+
 void chessboard_check(double output)
 {
 	if(output > 0.9)
 	{
-		std::cout << "Part of the Chessboard!" << std::endl;
+		std::cout << "Part of the Chessboard." << std::endl;
 	}
-
-	usleep(20000);
+	else
+	{
+		std::cout << "Not a part of the Chessboard." << std::endl;
+	}
 }
 
 int main(int argc, char* argv[])
 {
 	std::cout << "OpenCV Version: " << CV_VERSION << std::endl;
 
-	if(argc != 3)
+	if(argc != 4)
 	{
-		std::cerr << "Error: Please enter TWO images." << std::endl;
+		std::cerr << "Error: Please enter three images." << std::endl;
 		std::cerr << " Usage: " << argv[0] << 
 			" train_image.extension test_image.extenstion" << std::endl;
 		return 1;
 	}
 
 	Mat train_image = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+	Mat train_image_target = imread(argv[2], CV_LOAD_IMAGE_GRAYSCALE);
 	if(train_image.empty())
 	{
 		std::cerr << "Error: Could not load test image: " << 
@@ -169,17 +181,17 @@ int main(int argc, char* argv[])
 
 	while(trainingCount < totalTrainingCount)
 	{
-		if((float)image_features[trainingCount].blobFlag == 0 &&
+		/*if((float)image_features[trainingCount].blobFlag == 0 &&
 			(float)image_features[trainingCount].lineFlag == 0 && 
 			(float)image_features[trainingCount].cornerFlag == 0)
 		{
 			trainingCount++;
 			continue;
-		}
+		}*/
 
 		const std::vector<float> training_inputs = 
 		{
-			//image_features[trainingCount].intensity,
+			image_features[trainingCount].intensity,
 			(float)image_features[trainingCount].blobFlag,
 			(float)image_features[trainingCount].lineFlag,
 			(float)image_features[trainingCount].cornerFlag
@@ -193,9 +205,6 @@ int main(int argc, char* argv[])
 		{
 			inputLayer[i].setNodeVal(training_inputs[i]);
 		}
-
-		// 1 - Chessboard, 0 - No Chessboard.
-		ideal_output = 1; // THIS WILL CHANGE. 1 for now, since I am only feeding chessboards to the net.
 		
 		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
 		{
@@ -207,6 +216,11 @@ int main(int argc, char* argv[])
 			outputLayer[i].calculateNodeVal();	
 		}
 		// --------------------------------------------------------------
+
+		//
+		Point2f coordinates = image_features[trainingCount].coordinates;
+		ideal_output = get_ideal_output(train_image_target, coordinates);
+		//
 
 		// Comparing to see if the outputs match.
 		compare(outputLayer.back().getNodeVal(), ideal_output);
@@ -239,7 +253,7 @@ int main(int argc, char* argv[])
 
 	// TESTING THE IMAGE --------------------------------------------
 
-	Mat test_image = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+	Mat test_image = imread(argv[3], CV_LOAD_IMAGE_COLOR);
 
 	std::vector<PixelChar> image_features_test_image;
 	processImage(test_image, image_features_test_image);
@@ -251,7 +265,7 @@ int main(int argc, char* argv[])
 	{
 		const std::vector<float> testing_inputs = 
 		{
-			//image_features_test_image[trainingCount_test_image].intensity,
+			image_features_test_image[trainingCount_test_image].intensity,
 			(float)image_features_test_image[trainingCount_test_image].blobFlag,
 			(float)image_features_test_image[trainingCount_test_image].lineFlag,
 			(float)image_features_test_image[trainingCount_test_image].cornerFlag
