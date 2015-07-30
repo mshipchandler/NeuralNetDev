@@ -54,7 +54,7 @@ void compare(double real_output, double ideal_output)
 			  << ", REAL OUTPUT: " << real_output << "]" << std::endl;
 
 	//std::cin.ignore(); // For debugging
-	usleep(20000);
+	//usleep(20000);
 }
 
 void chessboard_check(double output)
@@ -77,7 +77,9 @@ int main(int argc, char* argv[])
 
 	if(argc != 4)
 	{
-		std::cerr << "Error: Please enter TWO images." << std::endl;
+		std::cerr << "Error: Please enter three images" <<
+				"(1 positive, 1 negative and 1 test. " <<
+				"In that order)" << std::endl;
 		std::cerr << " Usage: " << argv[0] << 
 			" train_image.extension test_image.extenstion" << std::endl;
 		return 1;
