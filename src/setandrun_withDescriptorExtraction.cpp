@@ -85,9 +85,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	Mat train_image1 = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-	Mat train_image2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
-	if(train_image1.empty() || train_image2.empty())
+	Mat train_image_positive = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+	Mat train_image_negative = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+	if(train_image_positive.empty() || train_image_negative.empty())
 	{
 		std::cerr << "Error: Could not load test image: " << 
 			argv[1] << std::endl;
@@ -158,9 +158,9 @@ int main(int argc, char* argv[])
 	// Image Processing Work-----------------------------------------
 
 	std::vector<std::vector<double>> feature_vector_train = 
-										getDescriptors(train_image1);
+										getDescriptors(train_image_positive);
 	int image1_feature_vector_limit = (int)feature_vector_train.size();
-	std::vector<std::vector<double>> temp = getDescriptors(train_image2);
+	std::vector<std::vector<double>> temp = getDescriptors(train_image_negative);
 
 	feature_vector_train.insert(feature_vector_train.end(), temp.begin(), temp.end());
 
