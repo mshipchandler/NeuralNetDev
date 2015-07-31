@@ -20,6 +20,9 @@ image_preprocessor: directories image_preprocessor_binary
 descriptor_extractor: directories descriptor_extractor_binary
 	@echo "Binary created inside the ./bin directory."
 
+descriptor_extractor_multiple_image: directories descriptor_extractor_multiple_image_binary
+	@echo "Binary created inside the ./bin directory."
+
 directories:
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(BINDIR)
@@ -35,6 +38,9 @@ image_preprocessor_binary: Node.o setandrun_withImagePreprocessor.o
 descriptor_extractor_binary: Node.o setandrun_withDescriptorExtraction.o
 	@$(CC) $(CFLAGS) -o $(BINDIR)/runNet.out $(OBJDIR)/Node.o $(OBJDIR)/setandrun_withDescriptorExtraction.o $(OPENCV)
 
+descriptor_extractor_multiple_image_binary: Node.o setandrun_withDescriptorExtraction_multiple_image.o
+	@$(CC) $(CFLAGS) -o $(BINDIR)/runNet.out $(OBJDIR)/Node.o $(OBJDIR)/setandrun_withDescriptorExtraction_multiple_image.o $(OPENCV)
+
 Node.o: ./src/Node.cpp ./src/Node.h ./src/activation_functions.h
 	@$(CC) $(CFLAGS) -c ./src/Node.cpp -o ./obj/Node.o
 
@@ -46,6 +52,9 @@ setandrun_withImagePreprocessor.o: ./src/setandrun_withImagePreprocessor.cpp ./s
 
 setandrun_withDescriptorExtraction.o: ./src/setandrun_withDescriptorExtraction.cpp ./src/Node.h ./src/data.h ./src/activation_functions.h
 	@$(CC) $(CFLAGS) -c ./src/setandrun_withDescriptorExtraction.cpp -o ./obj/setandrun_withDescriptorExtraction.o
+
+setandrun_withDescriptorExtraction_multiple_image.o: ./src/setandrun_withDescriptorExtraction_multiple_image.cpp ./src/Node.h ./src/data.h ./src/activation_functions.h
+	@$(CC) $(CFLAGS) -c ./src/setandrun_withDescriptorExtraction_multiple_image.cpp -o ./obj/setandrun_withDescriptorExtraction_multiple_image.o
 
 clean:
 	@-rm -rf $(OBJDIR) $(BINDIR)

@@ -1,7 +1,8 @@
 /* 
 	Ma'ad Shipchandler
 	Set up and Run the network implementation file - with descriptor extractor
-	24-7-2015
+	for multiple images
+	30-7-2015
 */
 
 #include <iostream>
@@ -75,25 +76,6 @@ int main(int argc, char* argv[])
 {
 	std::cout << "OpenCV Version: " << CV_VERSION << std::endl;
 
-	if(argc != 4)
-	{
-		std::cerr << "Error: Please enter three images" <<
-				"(1 positive, 1 negative and 1 test. " <<
-				"In that order)" << std::endl;
-		std::cerr << " Usage: " << argv[0] << 
-			" train_image.extension test_image.extenstion" << std::endl;
-		return 1;
-	}
-
-	Mat train_image_positive = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-	Mat train_image_negative = imread(argv[2], CV_LOAD_IMAGE_COLOR);
-	if(train_image_positive.empty() || train_image_negative.empty())
-	{
-		std::cerr << "Error: Could not load test image: " << 
-			argv[1] << std::endl;
-		return 2;
-	}
-
 	std::vector<Node> inputLayer;
 	std::vector<Node> hiddenLayer;
 	std::vector<Node> outputLayer;
@@ -154,42 +136,48 @@ int main(int argc, char* argv[])
 
 	// --------------------------------------------------------------
 
-
-	// Image Processing Work-----------------------------------------
-
-	std::vector<std::vector<double>> feature_vector_train = 
-										getDescriptors(train_image_positive);
-	int image1_feature_vector_limit = (int)feature_vector_train.size();
-	std::vector<std::vector<double>> temp = getDescriptors(train_image_negative);
-
-	feature_vector_train.insert(feature_vector_train.end(), temp.begin(), temp.end());
-
-	// --------------------------------------------------------------
-
-
 	// Running the Neural Net----------------------------------------
 
 	/*  Here, for the inputLayer, nodeVal is taken from the data set
 		and for the hiddenLater and the outputLayer, nodeVal is 
 		calculated using weighted sums as per neural net 
 		heuristic. */
-	int totalTrainingCount = (int)feature_vector_train.size(); // or image.rows * image.cols;
-	//std::cout << totalTrainingCount = Total pixels = " << totalTrainingCount << std::endl;
 
-	int trainingCount = 0, ideal_output;
+	int trainingCount = 0, ideal_output, feature_vector_size = 0;
+	std::string image_name;
+	std::vector<std::vector<double>> feature_vector_train;
 
-	while(trainingCount < totalTrainingCount)
+	while(1)
 	{
+		if(trainingCount >= feature_vector_size)
+		{
+			trainingCount = 0;
+			std::cout << "Enter the image to train('None' to " <<
+				"move onto testing): ";
+			std::cin >> image_name;
+			if(image_name.compare("None") == 0)
+				break;
+			std::cout << "Positive training? (1 or 0): ";
+			std::cin >> ideal_output;
+
+			Mat image = imread(image_name, CV_LOAD_IMAGE_COLOR);
+			if(image.empty())
+			{
+				std::cerr << "Error: Could not load test image: " << 
+				image_name << std::endl;
+				return 2;
+			}
+
+			feature_vector_train = getDescriptors(image);
+			feature_vector_size = (int)feature_vector_train.size();
+		}
+
+
 		// 'Running' the Net --------------------------------------------
 		for(int i = 0; i < INPUTNUM; i++)
 		{
 			inputLayer[i].setNodeVal(feature_vector_train[trainingCount][i]);
 		}
-
-		// 1 - Chessboard, 0 - No Chessboard.
-		ideal_output = 1;
-		if(trainingCount > image1_feature_vector_limit)
-			ideal_output = 0;
 		
 		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
 		{
@@ -233,7 +221,10 @@ int main(int argc, char* argv[])
 
 	// TESTING THE IMAGE --------------------------------------------
 
-	Mat test_image = imread(argv[3], CV_LOAD_IMAGE_COLOR);
+	std::string test_image_name;
+	std::cout << "Enter the image to test: ";
+	std::cin >> test_image_name;
+	Mat test_image = imread(test_image_name, CV_LOAD_IMAGE_COLOR);
 
 	std::vector<std::vector<double>> feature_vector_test = 
 										getDescriptors(test_image);	
