@@ -35,3 +35,16 @@ std::vector<std::vector<double>> getDescriptors(Mat image)
 
 	return feature_vector;
 }
+
+std::vector<KeyPoint> getKeypoints(Mat image)
+{
+	int minHessian = 400;
+	Ptr<xfeatures2d::SURF> surf = xfeatures2d::SURF::create(minHessian);
+
+	std::vector<KeyPoint> keypoints;
+	Mat descriptors;
+
+	surf->detectAndCompute(image, Mat(), keypoints, descriptors);
+
+	return keypoints;
+}

@@ -58,18 +58,23 @@ void compare(double real_output, double ideal_output)
 	//usleep(20000);
 }
 
-void chessboard_check(double output)
+
+// Need to improve this to get pixel location and highlighting. -MS
+void chessboard_check(double output, Mat image)
 {
 	if(output > 0.9)
 	{
-		std::cout << "Part of the Chessboard." << std::endl;
+		std::vector<KeyPoint> keypoints = getKeypoints(image);
+		Mat keypoint_image;
+		drawKeypoints(image, keypoints, keypoint_image);
+
+		imshow("Detected Chessboard", keypoint_image);
+		waitKey(0);
 	}
 	else
 	{
 		std::cout << "Not a part of the Chessboard." << std::endl;	
 	}
-
-	usleep(20000);
 }
 
 int main(int argc, char* argv[])
@@ -254,7 +259,7 @@ int main(int argc, char* argv[])
 			outputLayer[i].calculateNodeVal();	
 		}
 
-		chessboard_check(outputLayer.back().getNodeVal());
+		chessboard_check(outputLayer.back().getNodeVal(), test_image);
 
 		trainingCount_test_image++;
 	}
