@@ -58,23 +58,26 @@ void compare(double real_output, double ideal_output)
 	//usleep(20000);
 }
 
-
-// Need to improve this to get pixel location and highlighting. -MS
-void chessboard_check(double output, Mat image)
+void chessboard_check(double output, const KeyPoint& kp, std::vector<KeyPoint>& keypoints_of_chessboard)
 {
 	if(output > 0.9)
 	{
-		std::vector<KeyPoint> keypoints = getKeypoints(image);
-		Mat keypoint_image;
-		drawKeypoints(image, keypoints, keypoint_image);
-
-		imshow("Detected Chessboard", keypoint_image);
-		waitKey(0);
+		std::cout << "Part of the Chessboard." << std::endl;
+		keypoints_of_chessboard.push_back(kp);
 	}
 	else
 	{
 		std::cout << "Not a part of the Chessboard." << std::endl;	
 	}
+}
+
+void detect_chessboard(Mat image, std::vector<KeyPoint>& keypoints)
+{
+	Mat keyPointImage;
+	drawKeypoints(image, keypoints, keyPointImage);
+
+	imshow("Chessboard detected", keyPointImage);
+	waitKey(0);
 }
 
 int main(int argc, char* argv[])
@@ -173,7 +176,8 @@ int main(int argc, char* argv[])
 				return 2;
 			}
 
-			feature_vector_train = getDescriptors(image);
+			std::vector<KeyPoint> keypoints;
+			feature_vector_train = getDescriptors(image, keypoints);
 			feature_vector_size = (int)feature_vector_train.size();
 		}
 
@@ -231,8 +235,10 @@ int main(int argc, char* argv[])
 	std::cin >> test_image_name;
 	Mat test_image = imread(test_image_name, CV_LOAD_IMAGE_COLOR);
 
+	std::vector<KeyPoint> keypoints;
+	std::vector<KeyPoint> keypoints_of_chessboard;
 	std::vector<std::vector<double>> feature_vector_test = 
-										getDescriptors(test_image);	
+										getDescriptors(test_image, keypoints);	
 
 	int totalTrainingCount_test_image = (int)feature_vector_test.size();
 	int trainingCount_test_image = 0;
@@ -259,10 +265,12 @@ int main(int argc, char* argv[])
 			outputLayer[i].calculateNodeVal();	
 		}
 
-		chessboard_check(outputLayer.back().getNodeVal(), test_image);
+		chessboard_check(outputLayer.back().getNodeVal(), keypoints[trainingCount_test_image], keypoints_of_chessboard);
 
 		trainingCount_test_image++;
 	}
+
+	detect_chessboard(test_image, keypoints_of_chessboard);
 
 	// --------------------------------------------------------------
 

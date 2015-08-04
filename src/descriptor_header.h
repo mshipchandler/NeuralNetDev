@@ -6,17 +6,18 @@
 
 // OpenCV 3 Library List ---------------------------------------------------
 #include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp> 
+#include <opencv2/highgui.hpp>
+//#include <opencv2/imgproc.hpp>
 #include <opencv2/xfeatures2d.hpp> // xfeatures2d, SURF, drawKeypoints()
 using namespace cv;
 // -------------------------------------------------------------------------
 
-std::vector<std::vector<double>> getDescriptors(Mat image)
+std::vector<std::vector<double>> getDescriptors(Mat image, std::vector<KeyPoint>& keypoints)
 {
 	int minHessian = 400;
 	Ptr<xfeatures2d::SURF> surf = xfeatures2d::SURF::create(minHessian);
 
-	std::vector<KeyPoint> keypoints;
+	//std::vector<KeyPoint> keypoints;
 	Mat descriptors;
 
 	surf->detectAndCompute(image, Mat(), keypoints, descriptors);
@@ -34,17 +35,4 @@ std::vector<std::vector<double>> getDescriptors(Mat image)
 	}
 
 	return feature_vector;
-}
-
-std::vector<KeyPoint> getKeypoints(Mat image)
-{
-	int minHessian = 400;
-	Ptr<xfeatures2d::SURF> surf = xfeatures2d::SURF::create(minHessian);
-
-	std::vector<KeyPoint> keypoints;
-	Mat descriptors;
-
-	surf->detectAndCompute(image, Mat(), keypoints, descriptors);
-
-	return keypoints;
 }
