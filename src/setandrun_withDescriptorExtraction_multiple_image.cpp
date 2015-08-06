@@ -80,9 +80,45 @@ void detect_chessboard(Mat image, std::vector<KeyPoint>& keypoints)
 	waitKey(0);
 }
 
+struct Images
+{
+	Mat image;
+	double ideal_output;
+
+	Images(Mat _image, double _ideal_output) : image(_image), ideal_output(_ideal_output) { }
+};
+
 int main(int argc, char* argv[])
 {
 	std::cout << "OpenCV Version: " << CV_VERSION << std::endl;
+
+	// Loading images -----------------------------------------------
+	Mat temp;
+	std::vector<Images> image_stream;
+	std::string baseLoc = "./resources/images/";
+
+	// Adding images to the image stream.
+	for(int i = 0; i < 6; i++)
+	{
+		std::string updatedLoc = baseLoc + "positive/" + std::to_string(i + 1) + ".jpg";
+		temp = imread(updatedLoc, CV_LOAD_IMAGE_COLOR);
+		if(!temp.data)
+		{
+			std::cerr << "Error: Could not load image: " << updatedLoc << std::endl;
+			return -2;
+		}
+		image_stream.push_back(Images(temp, 1));
+
+		updatedLoc = baseLoc + "negative/" + std::to_string(i + 1) + ".jpg";
+		temp = imread(updatedLoc, CV_LOAD_IMAGE_COLOR);
+		if(!temp.data)
+		{
+			std::cerr << "Error: Could not load image: " << updatedLoc << std::endl;
+			return -2;
+		}
+		image_stream.push_back(Images(temp, 0));
+	}
+	// --------------------------------------------------------------
 
 	std::vector<Node> inputLayer;
 	std::vector<Node> hiddenLayer;
@@ -154,12 +190,13 @@ int main(int argc, char* argv[])
 	int trainingCount = 0, ideal_output, feature_vector_size = 0;
 	std::string image_name;
 	std::vector<std::vector<double>> feature_vector_train;
+	int image_counter = 0;
 
 	while(1)
 	{
 		if(trainingCount >= feature_vector_size)
 		{
-			trainingCount = 0;
+			/*trainingCount = 0;
 			std::cout << "Enter the image to train('None' to " <<
 				"move onto testing): ";
 			std::cin >> image_name;
@@ -169,12 +206,28 @@ int main(int argc, char* argv[])
 			std::cin >> ideal_output;
 
 			Mat image = imread(image_name, CV_LOAD_IMAGE_COLOR);
-			if(image.empty())
+			if(!image.data)
 			{
-				std::cerr << "Error: Could not load test image: " << 
+				std::cerr << "Error: Could not load image: " << 
 				image_name << std::endl;
-				return 2;
+				return -2;
 			}
+
+			std::vector<KeyPoint> keypoints;
+			feature_vector_train = getDescriptors(image, keypoints);
+			feature_vector_size = (int)feature_vector_train.size();*/
+
+			if(image_counter == (int)image_stream.size())
+				break;
+
+			trainingCount = 0;
+			std::cout << "Training phase: " << std::endl;
+			Mat image = image_stream[image_counter].image.clone();
+			ideal_output = image_stream[image_counter].ideal_output;
+			image_counter++;
+
+			imshow("Processing Image", image);
+			waitKey(1000);
 
 			std::vector<KeyPoint> keypoints;
 			feature_vector_train = getDescriptors(image, keypoints);
@@ -234,6 +287,11 @@ int main(int argc, char* argv[])
 	std::cout << "Enter the image to test: ";
 	std::cin >> test_image_name;
 	Mat test_image = imread(test_image_name, CV_LOAD_IMAGE_COLOR);
+	if(!test_image.data)
+	{
+		std::cerr << "Error: Could not load image: " << test_image_name << std::endl;
+		return -2;
+	}
 
 	std::vector<KeyPoint> keypoints;
 	std::vector<KeyPoint> keypoints_of_chessboard;
