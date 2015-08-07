@@ -22,7 +22,7 @@
 void calcRMS(std::vector<Node>& outputLayer, double ideal_output)
 {
 	double error = 0, RMS;
-	for(int i = 0; i < (int)outputLayer.size(); i++)
+	for(size_t i = 0; i < outputLayer.size(); i++)
 	{
 		double delta = ideal_output - outputLayer[i].getNodeVal();
 		error += delta * delta;
@@ -74,10 +74,14 @@ void chessboard_check(double output, const KeyPoint& kp, std::vector<KeyPoint>& 
 void detect_chessboard(Mat image, std::vector<KeyPoint>& keypoints)
 {
 	Mat keyPointImage;
-	drawKeypoints(image, keypoints, keyPointImage);
 
-	imshow("Chessboard detected", keyPointImage);
-	waitKey(0);
+	for(int i = 0; ; i++)
+	{
+		drawKeypoints(image, keypoints, keyPointImage);
+
+		imshow("Chessboard detected", keyPointImage);
+		waitKey(10);
+	}
 }
 
 struct Images
