@@ -12,6 +12,11 @@
 using namespace cv;
 // -------------------------------------------------------------------------
 
+/*
+	This header will extract descriptors from an image and return a vector of
+	faetures. (64 features in this set up - each will server as an input node)
+*/
+
 std::vector<std::vector<double>> getDescriptors(Mat image, std::vector<KeyPoint>& keypoints)
 {
 	int minHessian = 400;

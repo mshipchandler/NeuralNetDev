@@ -58,6 +58,11 @@ void compare(double real_output, double ideal_output)
 	//usleep(20000);
 }
 
+/*
+	Function to check if output is a part of the keyboard or not. Stores keypoint
+	if it is a part of the keyboard.
+*/
+
 void chessboard_check(double output, const KeyPoint& kp, std::vector<KeyPoint>& keypoints_of_chessboard)
 {
 	if(output > 0.9)
@@ -71,6 +76,8 @@ void chessboard_check(double output, const KeyPoint& kp, std::vector<KeyPoint>& 
 	}
 }
 
+
+// For display purposes. Highlights or flashes keypoints of detected chessboard
 void detect_chessboard(Mat image, std::vector<KeyPoint>& keypoints)
 {
 	Mat keyPointImage;
@@ -84,6 +91,10 @@ void detect_chessboard(Mat image, std::vector<KeyPoint>& keypoints)
 	}
 }
 
+/*
+	Structure used for TRAINING purposes. Holds an image and a flag to show if
+	it is a keyboard or not.
+*/
 struct Images
 {
 	Mat image;
@@ -198,6 +209,7 @@ int main(int argc, char* argv[])
 
 	while(1)
 	{
+		// Add a new image to process once an older one has been processed.
 		if(trainingCount >= feature_vector_size)
 		{
 			/*trainingCount = 0;
@@ -222,7 +234,7 @@ int main(int argc, char* argv[])
 			feature_vector_size = (int)feature_vector_train.size();*/
 
 			if(image_counter == (int)image_stream.size())
-				break;
+				break; // break out of while loop
 
 			trainingCount = 0;
 			std::cout << "Training phase: " << std::endl;
