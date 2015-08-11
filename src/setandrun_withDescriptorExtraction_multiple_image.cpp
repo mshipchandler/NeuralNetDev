@@ -300,11 +300,15 @@ int main(int argc, char* argv[])
 
 	// TESTING THE IMAGE --------------------------------------------
 
-	std::string test_image_name = "";
-	while(test_image_name.compare("Exit") != 0)
+	while(1)
 	{
+		std::string test_image_name;
 		std::cout << "Enter the image to test ('Exit' to quit): ";
 		std::cin >> test_image_name;
+
+		if(test_image_name.compare("Exit") == 0)
+			break;
+
 		Mat test_image = imread(test_image_name, CV_LOAD_IMAGE_COLOR);
 		if(!test_image.data)
 		{
