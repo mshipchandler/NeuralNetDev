@@ -82,13 +82,14 @@ void detect_chessboard(Mat image, std::vector<KeyPoint>& keypoints)
 {
 	Mat keyPointImage;
 
-	for(int i = 0; ; i++)
+	for(int i = 0; i < 500; i++)
 	{
 		drawKeypoints(image, keypoints, keyPointImage);
 
 		imshow("Chessboard detected", keyPointImage);
 		waitKey(10);
 	}
+	std::cin.ignore();
 }
 
 /*
@@ -299,52 +300,55 @@ int main(int argc, char* argv[])
 
 	// TESTING THE IMAGE --------------------------------------------
 
-	std::string test_image_name;
-	std::cout << "Enter the image to test: ";
-	std::cin >> test_image_name;
-	Mat test_image = imread(test_image_name, CV_LOAD_IMAGE_COLOR);
-	if(!test_image.data)
+	std::string test_image_name = "";
+	while(test_image_name.compare("Exit") != 0)
 	{
-		std::cerr << "Error: Could not load image: " << test_image_name << std::endl;
-		return -2;
+		std::cout << "Enter the image to test ('Exit' to quit): ";
+		std::cin >> test_image_name;
+		Mat test_image = imread(test_image_name, CV_LOAD_IMAGE_COLOR);
+		if(!test_image.data)
+		{
+			std::cerr << "Error: Could not load image: " << test_image_name << std::endl;
+			continue; // rerun the loop
+		}
+
+		std::vector<KeyPoint> keypoints;
+		std::vector<KeyPoint> keypoints_of_chessboard;
+		std::vector<std::vector<double>> feature_vector_test = 
+											getDescriptors(test_image, keypoints);	
+
+		int totalTrainingCount_test_image = (int)feature_vector_test.size();
+		int trainingCount_test_image = 0;
+
+		while(trainingCount_test_image < totalTrainingCount_test_image)
+		{
+
+			// 'Running' the Net
+			for(int i = 0; i < INPUTNUM; i++)
+			{
+				inputLayer[i].setNodeVal(feature_vector_test[trainingCount_test_image][i]);
+			}
+
+			// 1 - Chessboard, 0 - No Chessboard.
+			ideal_output = 1; // THIS WILL CHANGE. 1 for now, since I am only feeding chessboards to the net.
+			
+			for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
+			{
+				hiddenLayer[i].calculateNodeVal();
+			}
+
+			for(int i = 0; i < OUTPUTNUM; i++) // Exclude the bias since it has a constant nodeVal.
+			{
+				outputLayer[i].calculateNodeVal();	
+			}
+
+			chessboard_check(outputLayer.back().getNodeVal(), keypoints[trainingCount_test_image], keypoints_of_chessboard);
+
+			trainingCount_test_image++;
+		}
+
+		detect_chessboard(test_image, keypoints_of_chessboard);
 	}
-
-	std::vector<KeyPoint> keypoints;
-	std::vector<KeyPoint> keypoints_of_chessboard;
-	std::vector<std::vector<double>> feature_vector_test = 
-										getDescriptors(test_image, keypoints);	
-
-	int totalTrainingCount_test_image = (int)feature_vector_test.size();
-	int trainingCount_test_image = 0;
-
-	while(trainingCount_test_image < totalTrainingCount_test_image)
-	{
-
-		// 'Running' the Net
-		for(int i = 0; i < INPUTNUM; i++)
-		{
-			inputLayer[i].setNodeVal(feature_vector_test[trainingCount_test_image][i]);
-		}
-
-		// 1 - Chessboard, 0 - No Chessboard.
-		ideal_output = 1; // THIS WILL CHANGE. 1 for now, since I am only feeding chessboards to the net.
-		
-		for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
-		{
-			hiddenLayer[i].calculateNodeVal();
-		}
-
-		for(int i = 0; i < OUTPUTNUM; i++) // Exclude the bias since it has a constant nodeVal.
-		{
-			outputLayer[i].calculateNodeVal();	
-		}
-
-		chessboard_check(outputLayer.back().getNodeVal(), keypoints[trainingCount_test_image], keypoints_of_chessboard);
-
-		trainingCount_test_image++;
-	}
-
-	detect_chessboard(test_image, keypoints_of_chessboard);
 
 	// --------------------------------------------------------------
 
