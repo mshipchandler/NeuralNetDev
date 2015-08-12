@@ -24,6 +24,17 @@ Node::Node(int _type, int _nodeID, double _nodeVal, bool _biasFlag,
 	act_func = _act_func;
 }
 
+// Should only be explicitly used for an Input Layer.
+void Node::setNodeVal(double _nodeVal)
+{
+	nodeVal = _nodeVal; 
+}
+
+double Node::getNodeVal()
+{
+	return nodeVal;
+}
+
 // Set the weights of the connections.
 void Node::setWeight(double _weight, Node* _destination)
 {
@@ -40,6 +51,11 @@ double Node::getWeight(Node* address)
 	}
 
 	return ERROR; // Should never reach here if Net is set up properly.
+}
+
+void Node::setWeightPort(Node* address) 
+{
+	weight_port.push_back(address);
 }
 
 // Finds the value of the Node after calculating the weighted sum and passing it
@@ -70,6 +86,11 @@ void Node::setWeight_forUpdate(double updatedWeight, Node* address)
 		if(weights[i].destination == address)
 			weights[i].weight = updatedWeight;
 	}
+}
+
+bool Node::isBias()
+{
+	return biasFlag;
 }
 
 // Function to calculate the errorGradient for the respective nodes.
@@ -105,6 +126,11 @@ void Node::calculateErrorGradients(double ideal_output)
 		std::cout << "SYSTEM MSG: Error: Cannot calculate errorGradient" 
 					<< std::endl; // Should never reach here.
 	}
+}
+
+double Node::getErrorGradient()
+{
+	return errorGradient;
 }
 
 // Functionality for updating weights. To be used after errorGradients have been calculated.
@@ -144,3 +170,5 @@ void Node::display()
 }
 
 // ---------------------------------------------------------------------------------------------
+
+NodeCxn::NodeCxn(double _weight, Node* _destination) : weight(_weight), destination(_destination) { }

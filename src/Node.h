@@ -40,18 +40,18 @@ class Node
 		Node(int, int, double, bool, iActivationFunction*);
 
 		// Setup and misc. functions
-		void setNodeVal(double _nodeVal) { nodeVal = _nodeVal; } // Should only be explicitly used for an Input Layer.
-		double getNodeVal() { return nodeVal; }
+		void setNodeVal(double);
+		double getNodeVal();
 		void setWeight(double, Node*);
 		double getWeight(Node*);
-		void setWeightPort(Node* address) { weight_port.push_back(address); }
+		void setWeightPort(Node*);
 		void calculateNodeVal();
 		void setWeight_forUpdate(double, Node*);
-		bool isBias() { return biasFlag; }
+		bool isBias();
 
 		// Function for the training cycle
 		void calculateErrorGradients(double);
-		double getErrorGradient() { return errorGradient; }
+		double getErrorGradient();
 		void updateWeights();
 
 		// Debug Functions
@@ -64,7 +64,7 @@ struct NodeCxn
 	double weight;
 	Node* destination;
 
-	NodeCxn(double _weight, Node* _destination) : weight(_weight), destination(_destination) { }
+	NodeCxn(double, Node*);
 };
 
 #endif
