@@ -215,11 +215,37 @@ void cornerDetection(Mat image, std::vector<Point2f>& corners)
 		{
 			if((int)dst_norm.at<float>(i,j) > thresh && (int)dst_norm.at<float>(i,j) < max_thresh)
 			{
-				//circle(dst_norm_scaled, Point(i, j), 5, Scalar(255, 255, 255), 1, CV_AA, 0);
-				corners.push_back(Point2f(i, j));
+				//circle(dst_norm_scaled, Point(j, i), 5, Scalar(255, 255, 255), 1, CV_AA, 0);
+				corners.push_back(Point2f(j, i));
 			}
 		}
 	}
+
+	Size image_size = image.size();
+	Mat mask = Mat::zeros(image_size.height, image_size.width, CV_8U);
+
+	for(size_t i = 0; i < corners.size(); i++)
+	{
+		Point2f center = corners[i];
+		circle(mask, center, 1, Scalar(255), -1);
+	}
+
+	corners.clear();
+
+	// Adding pixels located within the corner radius
+	for(int row = 0; row < image.rows; row++)
+	{
+		for(int column = 0; column < image.cols; column++)
+		{
+			Vec3b channels = mask.at<uchar> (row, column);
+			if(channels[0] > 0)
+				corners.push_back(Point2f(column, row));
+		}
+	}
+
+	/*imshow("Mask", mask);
+	imshow("Original", image);
+	waitKey(0);*/
 }
 
 /*
