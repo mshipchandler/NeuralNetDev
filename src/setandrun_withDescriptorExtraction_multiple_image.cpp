@@ -11,7 +11,7 @@
 #include <unistd.h> // usleep()
 #include "Node.h"
 #include "data.h"
-#include "descriptor_header.h"
+#include "descriptor_header.h" // Also includes the OpenCV headers.
 #include "activation_functions.h"
 
 #define INPUTNUM 64 // Not including the Bias for the hidden layer.
