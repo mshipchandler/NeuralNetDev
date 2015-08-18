@@ -32,6 +32,7 @@ std::vector<std::vector<double>> getDescriptors(Mat image, std::vector<KeyPoint>
 
 	for(int row = 0; row < descriptors.rows; row++)
 	{
+		row_feature_vector.clear(); // This was missing. Major bug. Fixed now. -MS
 		for(int column = 0; column < descriptors.cols; column++)
 		{
 			row_feature_vector.push_back(descriptors.at<float> (row, column));

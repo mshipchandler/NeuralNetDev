@@ -332,9 +332,6 @@ int main(int argc, char* argv[])
 			{
 				inputLayer[i].setNodeVal(feature_vector_test[trainingCount_test_image][i]);
 			}
-
-			// 1 - Chessboard, 0 - No Chessboard.
-			ideal_output = 1; // THIS WILL CHANGE. 1 for now, since I am only feeding chessboards to the net.
 			
 			for(int i = 0; i < HIDDENNUM; i++) // Exclude the bias since it has a constant nodeVal.
 			{
