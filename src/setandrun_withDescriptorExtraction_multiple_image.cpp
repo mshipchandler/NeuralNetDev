@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
 
 	for(int i = 0; i < HIDDENNUM; i++)
 		hiddenLayer.push_back(Node(HIDDEN, ID++, 0.0, false, act_func));
-	hiddenLayer.push_back(Node(INPUT, ID++, biasNodeForOutput_Val, true, act_func)); // Bias Node
+	hiddenLayer.push_back(Node(HIDDEN, ID++, biasNodeForOutput_Val, true, act_func)); // Bias Node
 
 	for(int i = 0; i < OUTPUTNUM; i++)
 		outputLayer.push_back(Node(OUTPUT, ID++, 0.0, false, act_func));
